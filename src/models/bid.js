@@ -17,7 +17,7 @@ const BidSchema =  new Schema({
     },
     modifiedAt:{
         type:Date,
-        required:true,
+        required:false,
     },
    user:{
     type:Schema.Types.ObjectId,

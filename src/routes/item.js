@@ -9,8 +9,8 @@ const { itemValidation } = require('../middlewares/validations/itemValidation');
 
 
 router.post('/item',isAuth,itemValidation,post)
-router.get('/userItems',isAuth,getLoggedInUser)
-router.get('/item',isAuth,getAll)
+router.get('/item',isAuth,getLoggedInUser)
+router.get('/items',isAuth,getAll) //admin route
 router.get('/item/:id',isAuth,getOne)
 router.put('/item/:id',isAuth,put)
 router.put('/item/:id',isAuth,putAuctionOrSold)

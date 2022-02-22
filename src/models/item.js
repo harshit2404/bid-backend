@@ -21,7 +21,7 @@ const ItemSchema =  new Schema({
     },
     
     bidStatus:{
-        type:Boolean,
+        type:String,
         required:true,
         default:'CREATED'
     },

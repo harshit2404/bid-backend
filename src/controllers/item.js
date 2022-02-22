@@ -1,9 +1,9 @@
-const { add,fetchAll,fetchOne,fetchLoggedIn,update,updateAuctionOrSold } = require("../services/item")
+const { add,fetchAll,fetchOne,fetchLoggedInUser,update,updateAuctionOrSold } = require("../services/item")
 
 
 post = async (req,res) =>{
-    const {body} = req
-    const {name,description,bidStartTime,bidEndTime,userId} = body
+    const {body,userId} = req
+    const {name,description,bidStartTime,bidEndTime} = body
     try{
     const result = await add({name,description,bidStartTime,bidEndTime,userId})
     response({
@@ -57,6 +57,7 @@ getAll = async (req,res) =>{
 getOne = async (req,res) =>{
     const {params} = req
     let {id} = params
+
     try{
     const result = await fetchOne({id})
     response({
@@ -85,7 +86,7 @@ getOne = async (req,res) =>{
 getLoggedInUser = async (req,res) =>{
     const {userId} = req
     try{
-    const result = await fetchLoggedIn({userId})
+    const result = await fetchLoggedInUser({userId})
     response({
         res:res,
         statusCode:result.statusCode,

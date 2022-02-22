@@ -5,9 +5,10 @@ const item = require('../models/item')
 const {Item,Artist,ItemImage} = db
 
 add = async({name,description,bidStartTime,bidEndTime,userId})=>{
-    const artist = await Artist.findOne({
-        user:userId
+    const artist=await Artist.findOne({
+        user:mongoose.Types.ObjectId(userId)
     })
+    console.log(artist)
     if(artist){ 
     const item = new Item({
         name,
@@ -17,6 +18,7 @@ add = async({name,description,bidStartTime,bidEndTime,userId})=>{
         bidEndTime,
     
     })
+
     await item.save()
     const result= {
         statusCode:201,
@@ -50,8 +52,11 @@ fetchAll = async({bidStatus})=>{
 }
 
 fetchLoggedInUser = async({userId})=>{
-    const item = await  Item.find({
-        user:userId
+    const artist = await  Artist.findOne({
+        user:mongoose.Types.ObjectId(userId)
+    })
+    const items  = await  Item.find({
+        artist:mongoose.Types.ObjectId(artist._id)
 
     }).populate('artist')
     const result= {
@@ -69,7 +74,6 @@ fetchOne = async({id})=>{
         _id:itemId,
     }).populate('artist')
 
-
     const result= {
         statusCode:200,
         message:"Artist fetched Successfully",
@@ -85,8 +89,11 @@ update = async({name,description,bidStartTime,bidEndTime,userId,id})=>{
     const item   =   await Item.findOne({
         _id:mongoose.Types.ObjectId(id)
     }).populate('artist')
-    const {itemArtist} = item
-    if(itemArtist.id!=artist.id){
+    const {artist:itemArtist} = item
+    console.log('----')
+    console.log(itemArtist._id)
+    console.log(artist._id)
+    if(!itemArtist._id.equals(artist._id)){
         const error      = new Error('You are not authorized to update this')
         error.statusCode = 401
         throw error
@@ -145,5 +152,6 @@ module.exports = {
     fetchOne,
     update,
     updateAuctionOrSold,
+    fetchLoggedInUser,
     
 }
