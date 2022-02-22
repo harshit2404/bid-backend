@@ -1,11 +1,13 @@
-const { add,fetchAll,fetchOne,fetchLoggedIn,update,updateAuctionOrSold } = require("../services/item")
+const { add,update,fetchItem,fetchCurrent,fetchHighest } = require("../services/bid")
+
 
 
 post = async (req,res) =>{
-    const {body} = req
-    const {name,description,bidStartTime,bidEndTime,userId} = body
+    const {body,params,userId} = req
+    const {id}          = params
+    const {bidAmount} = body
     try{
-    const result = await add({name,description,bidStartTime,bidEndTime,userId})
+    const result = await add({bidAmount,userId,id})
     response({
         res:res,
         statusCode:result.statusCode,
@@ -26,94 +28,41 @@ post = async (req,res) =>{
     }
 }    
 
-
-
-getAll = async (req,res) =>{
-    const {bidStatus} = req.query
-    try{
-    const result = await fetchAll({bidStatus})
-    response({
-        res:res,
-        statusCode:result.statusCode,
-        message:result.message,
-        data:result.data
-
-    })
-    
-    }
-    catch(err){
-        failureResponse({
-            res:res,
-            statusCode:err.statusCode,
-            message:err.message,
-        
-        })
-        
-    }
-}    
-
-
-
-getOne = async (req,res) =>{
-    const {params} = req
-    let {id} = params
-    try{
-    const result = await fetchOne({id})
-    response({
-        res:res,
-        statusCode:result.statusCode,
-        message:result.message,
-        data:result.data
-
-    })
-    
-    }
-    catch(err){
-        failureResponse({
-            res:res,
-            statusCode:err.statusCode,
-            message:err.message,
-        
-        })
-        
-    }
-}    
-
-
-
-
-getLoggedInUser = async (req,res) =>{
-    const {userId} = req
-    try{
-    const result = await fetchLoggedIn({userId})
-    response({
-        res:res,
-        statusCode:result.statusCode,
-        message:result.message,
-        data:result.data
-
-    })
-    
-    }
-    catch(err){
-        failureResponse({
-            res:res,
-            statusCode:err.statusCode,
-            message:err.message,
-        
-        })
-        
-    }
-}    
 
 
 
 put = async (req,res) =>{
-    const {body,userId,params} = req
+    const {params,body,userId} = req
     let {id} = params
-    const {name,description,bidStartTime,bidEndTime} = body
+    const{bidAmount} = body
     try{
-    const result = await update({name,description,bidStartTime,bidEndTime,userId,id})
+    const result = await update({bidAmount,userId,id})
+    response({
+        res:res,
+        statusCode:result.statusCode,
+        message:result.message,
+        data:result.data
+
+    })
+    
+    }
+    catch(err){
+        failureResponse({
+            res:res,
+            statusCode:err.statusCode,
+            message:err.message,
+        
+        })
+        
+    }
+}   
+
+
+
+getItem = async (req,res) =>{
+    const {id} = req.params
+    try{
+    const result = await fetchItem({id})
     response({
         res:res,
         statusCode:result.statusCode,
@@ -136,12 +85,11 @@ put = async (req,res) =>{
 
 
 
-putAuctionOrSold = async (req,res) =>{
-    const {body,params} = req
-    let {id} = params
-    const {bidStatus} = body
+getCurrent = async (req,res) =>{
+    const {params,userId} = req
+    const {id}            = params
     try{
-    const result = await updateAuctionOrSold({id,bidStatus})
+    const result = await fetchCurrent({id,userId})
     response({
         res:res,
         statusCode:result.statusCode,
@@ -160,20 +108,41 @@ putAuctionOrSold = async (req,res) =>{
         })
         
     }
-} 
+}    
 
 
 
 
+getHighest = async (req,res) =>{
+    const {params} = req
+    const {id}            = params
+    try{
+    const result = await fetchHighest({id})
+    response({
+        res:res,
+        statusCode:result.statusCode,
+        message:result.message,
+        data:result.data
 
+    })
+    
+    }
+    catch(err){
+        failureResponse({
+            res:res,
+            statusCode:err.statusCode,
+            message:err.message,
+        
+        })
+        
+    }
+}    
 
 
 module.exports = {
     post,
-    getAll,
-    getOne,
     put,
-    getLoggedInUser,
-    putAuctionOrSold,
-    
+    getItem,
+    getCurrent,
+    getHighest
 }

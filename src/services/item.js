@@ -1,13 +1,20 @@
 const mongoose = require('mongoose')
 
 const { db } = require("../models")
+const item = require('../models/item')
 const {Item,Artist,ItemImage} = db
 
-add = async({body})=>{
-    const {name,description} = body
+add = async({name,description,bidStartTime,bidEndTime,userId})=>{
+    const artist = await Artist.findOne({
+        user:userId
+    })
+    if(artist){ 
     const item = new Item({
         name,
         description,
+        artist:artist._id,
+        bidStartTime,
+        bidEndTime,
     
     })
     await item.save()
@@ -18,11 +25,22 @@ add = async({body})=>{
     }
     return result
 }
+    else{
+        const error      = new Error("Please add an artist first")
+        error.statusCode = 400
+        throw error
+
+}
+
+
+}
 
 
 
-fetchAll = async()=>{
-    const items=await Item.find({}).populate('artist')
+fetchAll = async({bidStatus})=>{
+    const items=await Item.find({
+        bidStatus,
+    }).populate('artist')
     const result= {
         statusCode:200,
         message:"Items fetched Successfully",
@@ -31,9 +49,22 @@ fetchAll = async()=>{
     return result
 }
 
+fetchLoggedInUser = async({userId})=>{
+    const item = await  Item.find({
+        user:userId
 
-fetchOne = async({params})=>{
-    const itemId=mongoose.Types.ObjectId(params.id)
+    }).populate('artist')
+    const result= {
+        statusCode:200,
+        message:"User Items fetched Successfully",
+        data:items,
+    }
+    return result
+}
+
+
+fetchOne = async({id})=>{
+    const itemId=mongoose.Types.ObjectId(id)
     const item = await Item.findOne({
         _id:itemId,
     }).populate('artist')
@@ -47,57 +78,65 @@ fetchOne = async({params})=>{
     return result
 }
 
-update = async({params,body})=>{
-    const {name,description} = body
-    const item = Item.findOne({
-        _id:params.id
+update = async({name,description,bidStartTime,bidEndTime,userId,id})=>{
+    const artist = await Artist.findOne({
+        user:mongoose.Types.ObjectId(userId)
     })
-    item.name = name
-    item.description = description
-    await item.save()
+    const item   =   await Item.findOne({
+        _id:mongoose.Types.ObjectId(id)
+    }).populate('artist')
+    const {itemArtist} = item
+    if(itemArtist.id!=artist.id){
+        const error      = new Error('You are not authorized to update this')
+        error.statusCode = 401
+        throw error
+    }
+    if(item.bidStatus=='CREATED'){
+    const updatedItem=await Item.findOneAndUpdate({
+        _id:id
+    },{
+        name,
+        description,
+        bidStartTime,
+        bidEndTime
+
+    },{
+        new:true
+    })
     const result= {
         statusCode:200,
         message:"Item updated Successfully",
-        data:item,
+        data:updatedItem,
     }
     return result
+    
+}
+else{
+    const error      = new Error('You cannot update an item in "auction or sold" status')
+    error.statusCode = 400
+    throw error
+
+}
+    
 
 }
 
-destroy = async ({params})=>{
-    const itemId = mongoose.Types.ObjectId(params.id)
-    const session = await mongoose.startSession()
-    try{
-        await session.startTransaction()
-        const artist=Item.findOne({
-            _id:itemId
-        })
-        await ItemImage.findOneAndDelete({
-            item:itemId
-        },{session})
-        await Artist.findOneAndDelete({
-            _id:artist.id
-        },{session})
-        await Item.findOneAndDelete({
-            _id:itemId
-        },{session})
-
-        await session.commitTransaction()
-        await session.endSession()
-
-        const result= {
-            statusCode:200,
-            message:"Item deleted Successfully",
-            data:0,
-        }
-        return result
-        
-
+updateAuctionOrSold = async({id,bidStatus})=>{
+    const item=await Item.findOneAndUpdate({
+        _id:id
+    },{
+        bidStatus
+    },{
+        new:true
+    })
+    const result= {
+        statusCode:200,
+        message:"Item status updated Successfully",
+        data:updatedItem,
     }
-    catch(err){
-        await session.abortTransaction()
-        throw err
-    }
+    return result
+
+
 }
 
 module.exports = {
@@ -105,6 +144,6 @@ module.exports = {
     fetchAll,
     fetchOne,
     update,
-    destroy,
+    updateAuctionOrSold,
     
 }

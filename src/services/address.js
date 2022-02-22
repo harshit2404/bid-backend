@@ -4,9 +4,8 @@ const { db } = require("../models");
 const {Address} = db
 
 
-add = async ({body,userId})=>{
-
-    const {address1,address2,address3,city,state,country,postalcode} = body
+add = async ({address1,address2,address3,city,state,country,postalcode,userId})=>{
+    
     const address = new Address({
         address1,
         address2,
@@ -40,8 +39,8 @@ fetchAll = async()=>{
     return result
 }
 
-fetchOne = async({params})=>{
-    const userId=mongoose.Types.ObjectId(params.id)
+fetchOne = async({id})=>{
+    const userId=mongoose.Types.ObjectId(id)
     const address = await Address.find({
         user:userId,
     })
@@ -57,11 +56,11 @@ fetchOne = async({params})=>{
     return result
 }
 
-update = async({params,body,userId})=>{
+update = async({id,address1,address2,address3,city,country,postalcode,userId})=>{
 
    userId    = mongoose.Types.ObjectId(userId)
-   const addressId = mongoose.Types.ObjectId(params.id)
-   const{address1,address2,address3,city,country,postalcode} = body
+   const addressId = mongoose.Types.ObjectId(id)
+   
    const address=await Address.findOne({
        _id:addressId
    }).populate('user')

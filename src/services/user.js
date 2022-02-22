@@ -6,9 +6,9 @@ require('dotenv').config()
 const { db } = require("../models");
 const {User} = db
 
-add = async({body})=>{
+add = async({username,email,password,firstname,lastname,phoneNumber,stripePaymentId,isActive})=>{
 
-    const {username,email,password,firstname,lastname,phoneNumber,role,stripePaymentId,isActive} = body
+   
     let user=await User.findOne({
         $or:[{username},{email}]
     }).exec()
@@ -44,8 +44,8 @@ add = async({body})=>{
 
 }
 
-login = async({body})=>{
-    const {email,password} = body
+login = async({email,password})=>{
+   
     const user= await User.findOne({
         email,
     })
@@ -103,8 +103,8 @@ fetchAll = async({query})=>{
     return result 
 }
 
-fetchOne = async({params})=>{
-    const id =  mongoose.Types.ObjectId(params.id); 
+fetchOne = async({id})=>{
+    id =  mongoose.Types.ObjectId(id); 
     const user = await User.findOne({
         _id:id
     })
@@ -117,16 +117,16 @@ fetchOne = async({params})=>{
 
 }
 
-update = async({body,params,userId})=>{
+update = async({id,username,email,firstname,lastname,phoneNumber,stripePaymentId,isActive,userId})=>{
 
-    if(params.id!=userId){
+    if(id!=userId){
         const error = new Error("you don't have access to update this record")
         error.statusCode = 400
         throw error
     }
     else{
-        const id = mongoose.Types.ObjectId(params.id)  
-        const {username,email,firstname,lastname,phoneNumber,stripePaymentId,isActive} = body 
+        id = mongoose.Types.ObjectId(id)  
+         
         const user = await User.findOneAndUpdate({
             _id:id
         },{
@@ -151,11 +151,11 @@ update = async({body,params,userId})=>{
 
 }
 
-updatePassword = async({params,body,userId})=>{
-    const {previousPassword,newPassword} = body
-    if(params.id==userId){
+updatePassword = async({id,previousPassword,newPassword,userId})=>{
+    
+    if(id==userId){
         const user=await User.findOne({
-            _id:params.id,
+            _id:id,
         })
         const isUserPassword=await bcrypt.compare(previousPassword,user.password)
         if(isUserPassword){

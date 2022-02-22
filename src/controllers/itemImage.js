@@ -2,9 +2,10 @@ const { add,fetchAll,destroy } = require("../services/itemImage")
 
 
 post = async (req,res) =>{
-    const {body,params,files} = req
+    const {params,files} = req
+    let {id}           = params
     try{
-    const result = await add({body,params,files})
+    const result = await add({id,files})
     response({
         res:res,
         statusCode:result.statusCode,
@@ -29,8 +30,9 @@ post = async (req,res) =>{
 
 getAll = async (req,res) =>{
     const {params} = req
+    let {id}     = params
     try{
-    const result = await fetchAll({params})
+    const result = await fetchAll({id})
     response({
         res:res,
         statusCode:result.statusCode,
@@ -55,8 +57,9 @@ getAll = async (req,res) =>{
 
 del = async (req,res) =>{
     const {params} = req
+    let {imgId}    = params
     try{
-    const result = await destroy({params})
+    const result = await destroy({imgId})
     response({
         res:res,
         statusCode:result.statusCode,

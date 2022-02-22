@@ -4,8 +4,9 @@ const { response,failureResponse } = require("../utils/result");
 
 signup = async (req,res) =>{
     const {body} = req
+    const {username,email,password,firstname,lastname,phoneNumber,stripePaymentId,isActive} = body
     try{
-    const result = await add({body})
+    const result = await add({username,email,password,firstname,lastname,phoneNumber,stripePaymentId,isActive})
     response({
         res:res,
         statusCode:result.statusCode,
@@ -30,8 +31,9 @@ signup = async (req,res) =>{
 
 signin = async (req,res) =>{
     const {body} = req
+    const {email,password} = body
     try{
-    const result = await login({body})
+    const result = await login({email,password})
     response({
         res:res,
         statusCode:result.statusCode,
@@ -80,8 +82,9 @@ getAll = async (req,res) =>{
 
 getOne = async (req,res) =>{
     const {params} = req
+    let {id}     = params
     try{
-    const result = await fetchOne({params})
+    const result = await fetchOne({id})
     response({
         res:res,
         statusCode:result.statusCode,
@@ -105,8 +108,10 @@ getOne = async (req,res) =>{
 
 put = async (req,res) =>{
     const {params,body,userId} = req
+    let {id} = params
+    const {username,email,firstname,lastname,phoneNumber,stripePaymentId,isActive} = body
     try{
-    const result = await update({params,body,userId})
+    const result = await update({id,username,email,firstname,lastname,phoneNumber,stripePaymentId,isActive,userId})
     response({
         res:res,
         statusCode:result.statusCode,
@@ -130,8 +135,10 @@ put = async (req,res) =>{
 
 putPassword = async (req,res) =>{
     const {params,body,userId} = req
+    const {id} = params
+    const {previousPassword,newPassword} = body
     try{
-    const result = await updatePassword({params,body,userId})
+    const result = await updatePassword({id,previousPassword,newPassword,userId})
     response({
         res:res,
         statusCode:result.statusCode,

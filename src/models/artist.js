@@ -17,6 +17,12 @@ const ArtistSchema =  new Schema({
    stripeConnectId:{
        type:String,
        required:false
+   },
+   user:{
+    type:Schema.Types.ObjectId,
+    ref: 'User',
+    required:true
+
    }
 
 });

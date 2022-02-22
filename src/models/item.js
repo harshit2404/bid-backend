@@ -22,7 +22,8 @@ const ItemSchema =  new Schema({
     
     bidStatus:{
         type:Boolean,
-        required:false
+        required:true,
+        default:'CREATED'
     },
     finalBidId:{
         type:String,
@@ -37,6 +38,8 @@ const ItemSchema =  new Schema({
     }
 
 });
+
+
 
 
 module.exports = mongoose.model("Item",ItemSchema)

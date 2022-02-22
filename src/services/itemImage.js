@@ -4,8 +4,8 @@ const { db } = require("../models")
 const {ItemImage} = db
 
 
-add = async({files,params})=>{
-    const itemid = mongoose.Types.ObjectId(params.id)
+add = async({id,files})=>{
+    const itemid = mongoose.Types.ObjectId(id)
     
     const imgArr=files.map(file=>{
         return{
@@ -25,8 +25,8 @@ add = async({files,params})=>{
 
 }
 
-fetchAll = async ({params})=>{
-    const itemId = mongoose.Types.ObjectId(params.id)
+fetchAll = async ({id})=>{
+    const itemId = mongoose.Types.ObjectId(id)
     const images=await ItemImage.find({
         item:itemId
     })
@@ -41,8 +41,8 @@ fetchAll = async ({params})=>{
 
 }
 
-destroy = async({params})=>{
-    const imgId = mongoose.Types.ObjectId(params.imgId)
+destroy = async({imgId})=>{
+    imgId = mongoose.Types.ObjectId(imgId)
     await ItemImage.deleteOne({
         _id:imgId
     })

@@ -3,8 +3,9 @@ const { add,fetchAll,fetchOne,update } = require("../services/address")
 
 post = async (req,res) =>{
     const {body,userId} = req
+    const {address1,address2,address3,city,state,country,postalcode} = body
     try{
-    const result = await add({body,userId})
+    const result = await add({address1,address2,address3,city,state,country,postalcode,userId})
     response({
         res:res,
         statusCode:result.statusCode,
@@ -52,9 +53,9 @@ getAll = async (req,res) =>{
 
 
 getOne = async (req,res) =>{
-    const {params} = req
+    let {id} = req.params
     try{
-    const result = await fetchOne({params})
+    const result = await fetchOne({id})
     response({
         res:res,
         statusCode:result.statusCode,
@@ -79,8 +80,10 @@ getOne = async (req,res) =>{
 
 put = async (req,res) =>{
     const {params,body,userId} = req
+    let {id} = params
+    const{address1,address2,address3,city,country,postalcode} = body
     try{
-    const result = await update({params,body,userId})
+    const result = await update({id,address1,address2,address3,city,country,postalcode,userId})
     response({
         res:res,
         statusCode:result.statusCode,
