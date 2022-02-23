@@ -1,10 +1,9 @@
 const mongoose = require('mongoose')
 
 const { db } = require("../models")
-const item = require('../models/item')
-const {Item,Artist,ItemImage} = db
+const {Item,Artist} = db
 
-add = async({name,description,bidStartTime,bidEndTime,userId})=>{
+add = async({name,description,userId})=>{
     const artist=await Artist.findOne({
         user:mongoose.Types.ObjectId(userId)
     })
@@ -14,8 +13,6 @@ add = async({name,description,bidStartTime,bidEndTime,userId})=>{
         name,
         description,
         artist:artist._id,
-        bidStartTime,
-        bidEndTime,
     
     })
 
@@ -82,7 +79,7 @@ fetchOne = async({id})=>{
     return result
 }
 
-update = async({name,description,bidStartTime,bidEndTime,userId,id})=>{
+update = async({name,description,userId,id})=>{
     const artist = await Artist.findOne({
         user:mongoose.Types.ObjectId(userId)
     })
@@ -90,9 +87,7 @@ update = async({name,description,bidStartTime,bidEndTime,userId,id})=>{
         _id:mongoose.Types.ObjectId(id)
     }).populate('artist')
     const {artist:itemArtist} = item
-    console.log('----')
-    console.log(itemArtist._id)
-    console.log(artist._id)
+  
     if(!itemArtist._id.equals(artist._id)){
         const error      = new Error('You are not authorized to update this')
         error.statusCode = 401
@@ -104,8 +99,6 @@ update = async({name,description,bidStartTime,bidEndTime,userId,id})=>{
     },{
         name,
         description,
-        bidStartTime,
-        bidEndTime
 
     },{
         new:true
@@ -128,18 +121,20 @@ else{
 
 }
 
-updateAuctionOrSold = async({id,bidStatus})=>{
+updateAuctionOrSold = async({id,bidStatus,bidStartTime,bidEndTime})=>{
     const item=await Item.findOneAndUpdate({
         _id:id
     },{
-        bidStatus
+        bidStatus,
+        bidStartTime,
+        bidEndTime,
     },{
         new:true
     })
     const result= {
         statusCode:200,
         message:"Item status updated Successfully",
-        data:updatedItem,
+        data:item,
     }
     return result
 

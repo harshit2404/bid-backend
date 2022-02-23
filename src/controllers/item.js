@@ -3,9 +3,9 @@ const { add,fetchAll,fetchOne,fetchLoggedInUser,update,updateAuctionOrSold } = r
 
 post = async (req,res) =>{
     const {body,userId} = req
-    const {name,description,bidStartTime,bidEndTime} = body
+    const {name,description} = body
     try{
-    const result = await add({name,description,bidStartTime,bidEndTime,userId})
+    const result = await add({name,description,userId})
     response({
         res:res,
         statusCode:result.statusCode,
@@ -112,9 +112,9 @@ getLoggedInUser = async (req,res) =>{
 put = async (req,res) =>{
     const {body,userId,params} = req
     let {id} = params
-    const {name,description,bidStartTime,bidEndTime} = body
+    const {name,description} = body
     try{
-    const result = await update({name,description,bidStartTime,bidEndTime,userId,id})
+    const result = await update({name,description,userId,id})
     response({
         res:res,
         statusCode:result.statusCode,
@@ -142,7 +142,7 @@ putAuctionOrSold = async (req,res) =>{
     let {id} = params
     const {bidStatus} = body
     try{
-    const result = await updateAuctionOrSold({id,bidStatus})
+    const result = await updateAuctionOrSold({id,bidStartTime,bidEndTime,bidStatus})
     response({
         res:res,
         statusCode:result.statusCode,

@@ -7,7 +7,6 @@ add = async ({bidAmount,userId,id})=>{
     let bid=await Bid.findOne({
         user:mongoose.Types.ObjectId(userId)
     })
-    console.log(bid)
     if(bid){
         const error      = new Error("You alreadyy bid for this item!Please update your previous bid")
         error.statusCode = 400
