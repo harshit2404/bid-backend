@@ -1,4 +1,5 @@
 const { add,fetchAll,fetchOne,fetchLoggedInUser,update,updateAuctionOrSold } = require("../services/item")
+const { enhanceQuery } = require("../utils/queryEnhancer")
 
 
 post = async (req,res) =>{
@@ -29,9 +30,10 @@ post = async (req,res) =>{
 
 
 getAll = async (req,res) =>{
-    const {bidStatus} = req.query
+    const {query} = req
     try{
-    const result = await fetchAll({bidStatus})
+    const modQuery=await enhanceQuery({query})    
+    const result = await fetchAll({modQuery})
     response({
         res:res,
         statusCode:result.statusCode,

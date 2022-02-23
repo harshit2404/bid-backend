@@ -83,24 +83,16 @@ login = async({email,password})=>{
 }
 
 
-fetchAll = async({query})=>{
-    let users,limit;
-    if(Object.keys(query).length===0){
-     users = await User.find({}).select(['-password'])
-    }
-    else{
-     if(query['limit']){        
-        limit = parseInt(query['limit'])
-        delete query['limit']
-     }   
-     users = await User.find(query).select(['-password']).limit(limit)
-    }
+fetchAll = async({modQuery})=>{
+    const {query,sort,limit} =  modQuery
+    users = await User.find(query).sort(sort).limit(limit).select('-password')
     const result= {
         statusCode:200,
         message:"Users fetched Successfully",
         data:users
     }
-    return result 
+    return result
+
 }
 
 fetchOne = async({id})=>{

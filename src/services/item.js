@@ -36,10 +36,9 @@ add = async({name,description,userId})=>{
 
 
 
-fetchAll = async({bidStatus})=>{
-    const items=await Item.find({
-        bidStatus,
-    }).populate('artist')
+fetchAll = async({modQuery})=>{
+    const {query,sort,limit} =  modQuery
+    const items = await Item.find(query).sort(sort).limit(limit)
     const result= {
         statusCode:200,
         message:"Items fetched Successfully",

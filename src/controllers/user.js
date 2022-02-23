@@ -1,4 +1,5 @@
 const { add, login, fetchAll, fetchOne, update,updatePassword } = require("../services/user");
+const { enhanceQuery } = require("../utils/queryEnhancer");
 const { response,failureResponse } = require("../utils/result");
 
 
@@ -58,7 +59,8 @@ signin = async (req,res) =>{
 getAll = async (req,res) =>{
     const {query} = req
     try{
-    const result = await fetchAll({query})
+    const modQuery =await enhanceQuery({query})
+    const result   = await fetchAll({modQuery})
     response({
         res:res,
         statusCode:result.statusCode,
