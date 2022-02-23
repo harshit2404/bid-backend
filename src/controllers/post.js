@@ -1,7 +1,6 @@
 const { fetchAll,fetchOne } = require("../services/post")
 
 getAll = async (req,res) =>{
-    console.log('harry')
     try{
     const result = await fetchAll()
     response({
