@@ -1,12 +1,13 @@
 const mongoose = require('mongoose')
 
 const { db } = require("../models");
+const user = require('../models/user');
 const {Artist} = db
 
 
 
 add = async({name,bio,id,files,userId})=>{
-
+    
     let artist=await Artist.findOne({
         user:mongoose.Types.ObjectId(userId)
     })
@@ -16,6 +17,11 @@ add = async({name,bio,id,files,userId})=>{
         throw error 
     }
     else{
+        if(await Artist.findOne({name})){
+            const error      = new Error('Artist name already taken')
+            error.statusCode = 400
+            throw error
+        }
         artist = new Artist({
             name,
             bio,

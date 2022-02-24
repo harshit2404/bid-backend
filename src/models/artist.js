@@ -5,6 +5,7 @@ const ArtistSchema =  new Schema({
     name:{
         type:String,
         required:true,
+        unique:true
     },
     bio:{
         type:String,
