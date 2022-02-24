@@ -11,11 +11,12 @@ const ItemSchema =  new Schema({
         type:String,
         required:true
     },
-    bitStartTime:{
+    bidStartTime:{
         type:Date,
-        required:false
+        required:false,
+        default:null
     },
-    bitEndTime:{
+    bidEndTime:{
         type:Date,
         required:false
     },

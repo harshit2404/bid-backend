@@ -25,10 +25,13 @@ signupValidation = [
     .withMessage(InvalidEmail)
     .normalizeEmail(),
  
-    (req,next)=>{
+    (req,res,next)=>{
     if(req.method=='POST'){
     check("password")
     .trim()
+    .not()
+    .isEmpty()
+    .withMessage(EmptyValue)
     .isLength({min:8})
     .withMessage(InvalidPassword)
     .not()
@@ -44,7 +47,7 @@ signupValidation = [
     .isAlpha()
     .withMessage(InvalidPassword)
     .run(req)
-    return next()
+     return next()
     }else{
         return next()
     }

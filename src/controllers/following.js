@@ -1,6 +1,7 @@
 const { add,destroy } = require("../services/following")
 
 post = async (req,res) =>{
+    console.log('hrry')
     const {userId,params}    = req
     const {id}               = params
     try{

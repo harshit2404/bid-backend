@@ -4,9 +4,12 @@ const {Bid}  = db
 
 
 add = async ({bidAmount,userId,id})=>{
+    console.log(userId)
     let bid=await Bid.findOne({
-        user:mongoose.Types.ObjectId(userId)
+        user:mongoose.Types.ObjectId(userId),
+        item:mongoose.Types.ObjectId(id)
     })
+    console.log(bid)
     if(bid){
         const error      = new Error("You alreadyy bid for this item!Please update your previous bid")
         error.statusCode = 400
@@ -52,12 +55,12 @@ fetchItem = async({id})=>{
     const bids=await Bid.find({
         item:mongoose.Types.ObjectId(id)
 
-    }).populate('user').count()
+    }).populate('user')
 
     const result= {
         statusCode:200,
         message:"Bids fetched Successfully",
-        data:updatedItem,
+        data:bids,
     }
     return result
 

@@ -84,8 +84,9 @@ login = async({email,password})=>{
 
 
 fetchAll = async({modQuery})=>{
+    console.log(modQuery)
     const {query,sort,limit} =  modQuery
-    users = await User.find(query).sort(sort).limit(limit).select('-password')
+    const users = await User.find(query).sort(sort).limit(limit).select('-password')
     const result= {
         statusCode:200,
         message:"Users fetched Successfully",

@@ -5,6 +5,20 @@ const { Item } = db
 
 
 
+fetchAll = async({modQuery})=>{
+    const {query,sort,limit} =  modQuery
+    query.bidStatus = 'AUCTION'
+    const items = await Item.find(query).sort(sort).limit(limit).populate('artist')
+    const result= {
+        statusCode:200,
+        message:"Items fetched Successfully",
+        data:items,
+    }
+    return result
+}
+
+
+/*
 fetchAll = async()=>{
     const posts= await Item.find({
          bidStatus:'AUCTION'
@@ -17,6 +31,7 @@ fetchAll = async()=>{
      return result
  
  }
+*/ 
  
  
 fetchOne = async({id})=>{

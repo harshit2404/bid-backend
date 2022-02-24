@@ -121,6 +121,7 @@ else{
 }
 
 updateAuctionOrSold = async({id,bidStatus,bidStartTime,bidEndTime})=>{
+   
     const item=await Item.findOneAndUpdate({
         _id:id
     },{

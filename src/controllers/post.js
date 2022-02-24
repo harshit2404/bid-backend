@@ -1,8 +1,12 @@
 const { fetchAll,fetchOne } = require("../services/post")
+const { enhanceQuery } = require("../utils/queryEnhancer")
+
 
 getAll = async (req,res) =>{
+    const {query} = req
     try{
-    const result = await fetchAll()
+    const modQuery=await enhanceQuery({query})    
+    const result = await fetchAll({modQuery})
     response({
         res:res,
         statusCode:result.statusCode,
@@ -21,8 +25,7 @@ getAll = async (req,res) =>{
         })
         
     }
-}    
-
+}   
 
 
 getOne = async (req,res) =>{

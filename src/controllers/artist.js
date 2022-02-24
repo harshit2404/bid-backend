@@ -1,4 +1,5 @@
-const { add,update,fetch } = require("../services/artist")
+const { add,update,fetch,fetchAll } = require("../services/artist")
+const { enhanceQuery } = require("../utils/queryEnhancer")
 
 
 
@@ -82,8 +83,38 @@ get = async (req,res) =>{
     }
 }   
 
+
+
+getAll = async (req,res) =>{
+    const {query} = req
+    try{
+    const modQuery=await enhanceQuery({query})    
+    const result = await fetchAll({modQuery})
+    response({
+        res:res,
+        statusCode:result.statusCode,
+        message:result.message,
+        data:result.data
+
+    })
+    
+    }
+    catch(err){
+        failureResponse({
+            res:res,
+            statusCode:err.statusCode,
+            message:err.message,
+        
+        })
+        
+    }
+}    
+
+
+
 module.exports = {
     post,
     put,
-    get
+    get,
+    getAll
 }

@@ -14,7 +14,7 @@ isAuthorize=(perm)=>{
     }
     const {userId} = req
 
-   const {user}= await User.findOne({
+   const user= await User.findOne({
         _id:mongoose.Types.ObjectId(userId)
 
     })
@@ -26,6 +26,7 @@ isAuthorize=(perm)=>{
         hasPermission = true
     }}
     if(hasPermission){
+        console.log('sd')
         return next()
     }
     else{

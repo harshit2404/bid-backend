@@ -6,13 +6,16 @@ const { post,getAll,getOne,getLoggedInUser,put,putAuctionOrSold} = require('../c
 const { isAuthorize } = require('../middlewares/permissions/isAuthorize');
 const { isAuth } = require('../middlewares/validations/isAuth');
 const { itemValidation,auctionValidation } = require('../middlewares/validations/itemValidation');
+const { validateResult } = require('../middlewares/validations/validationResult');
 
-router.post('/item',isAuth,itemValidation,post)
+
+
+router.post('/item',isAuth,itemValidation,validateResult,post)
 router.get('/item',isAuth,getLoggedInUser)
 router.get('/items',isAuth,getAll) 
 router.get('/item/:id',isAuth,getOne)
 router.put('/item/:id',isAuth,put)
-router.put('/item/:id/auction',isAuth,isAuthorize("MANAGE_AUCTION"),auctionValidation,putAuctionOrSold)
+router.put('/item/:id/auction',isAuth,isAuthorize("MANAGE_AUCTION"),auctionValidation,validateResult,putAuctionOrSold)
 
 
 

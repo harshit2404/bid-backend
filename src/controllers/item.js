@@ -142,7 +142,7 @@ put = async (req,res) =>{
 putAuctionOrSold = async (req,res) =>{
     const {body,params} = req
     let {id} = params
-    const {bidStatus} = body
+    const {bidStatus,bidStartTime,bidEndTime} = body
     try{
     const result = await updateAuctionOrSold({id,bidStartTime,bidEndTime,bidStatus})
     response({

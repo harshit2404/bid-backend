@@ -74,11 +74,27 @@ fetch = async ({userId})=>{
     return result
     
 }
+
+
+fetchAll = async({modQuery})=>{
+    const {query,sort,limit} =  modQuery
+    console.log(query)
+    const artists = await Artist.find(query).sort(sort).limit(limit)
+    const result= {
+        statusCode:200,
+        message:"Artists fetched Successfully",
+        data:artists,
+    }
+    return result
+}
+
+
     
 
 
 module.exports = {
 add,
 update,
-fetch
+fetch,
+fetchAll
 }

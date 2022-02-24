@@ -6,12 +6,13 @@ const {Following} = db
 add = async({id,userId})=>{
     let following;
     following  = await Following.findOne({
-        user:userId,
-        artist:id
+        user:mongoose.Types.ObjectId(userId),
+        artist:mongoose.Types.ObjectId(id)
     })
+    console.log(following)
     if(following){
         const error = new Error('You already followed this user')
-        artist.statusCode = 400
+        error.statusCode = 400
         throw error
     }
     following  = new Following({
