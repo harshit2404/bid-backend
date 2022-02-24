@@ -28,8 +28,9 @@ post = async (req,res) =>{
 
 
 getAll = async (req,res) =>{
+    const {userId} = req
     try{
-    const result = await fetchAll()
+    const result = await fetchAll({userId})
     response({
         res:res,
         statusCode:result.statusCode,

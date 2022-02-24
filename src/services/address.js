@@ -29,8 +29,10 @@ add = async ({address1,address2,address3,city,state,country,postalcode,userId})=
 }
 
 
-fetchAll = async()=>{
-    const addresses=await Address.find({}).populate('user')
+fetchAll = async({userId})=>{
+    const addresses=await Address.find({
+        user:mongoose.Types.ObjectId(userId)
+    }).populate('user')
     const result= {
         statusCode:200,
         message:"Addresses fetched Successfully",
@@ -40,13 +42,11 @@ fetchAll = async()=>{
 }
 
 fetchOne = async({id})=>{
-    const userId=mongoose.Types.ObjectId(id)
+    const addressId=mongoose.Types.ObjectId(id)
     const address = await Address.find({
-        user:userId,
+        _id:addressId
     })
     .populate('user')
-
-    console.log(address)
 
     const result= {
         statusCode:200,

@@ -11,7 +11,7 @@ const { validateResult } = require('../middlewares/validations/validationResult'
 
 router.post('/address',isAuth,addressValidation,validateResult,post)
 router.get('/address',isAuth,getAll)
-router.get('/users/:id/address',isAuth,getOne)
+router.get('/address/:id',isAuth,getOne)
 router.put('/address/:id',isAuth,addressValidation,validateResult,put)
 
 
