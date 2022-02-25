@@ -36,7 +36,13 @@ const ItemSchema =  new Schema({
         ref: 'Artist',
         required:false
 
-    }
+    },
+    images:[{ 
+        type:Schema.Types.ObjectId,
+        ref: 'ItemImage',
+        required:false
+        
+    }]
 
 });
 

@@ -7,10 +7,10 @@ const { isAuthorize } = require('../middlewares/permissions/isAuthorize');
 const { isAuth } = require('../middlewares/validations/isAuth');
 const { itemValidation,auctionValidation } = require('../middlewares/validations/itemValidation');
 const { validateResult } = require('../middlewares/validations/validationResult');
+const { uploadImage } = require('../middlewares/validations/imageUpload');
 
 
-
-router.post('/item',isAuth,isAuthorize("UPDATE_CREATE_ITEM"),itemValidation,validateResult,post)
+router.post('/items',isAuth,isAuthorize("UPDATE_CREATE_ITEM"),itemValidation,validateResult,uploadImage,post)
 router.get('/items',isAuth,getAll) 
 router.get('/items/:id',isAuth,getOne)
 router.put('/items/:id',isAuth,isAuthorize("UPDATE_CREATE_ITEM"),itemValidation,validateResult,put)

@@ -1,28 +1,42 @@
 const mongoose = require('mongoose')
 
 const { db } = require("../models")
+const { add:addImage } = require('./itemImage')
 const {Item,Artist} = db
 
-add = async({name,description,userId})=>{
+
+add = async({name,description,files,userId})=>{
+    let item;
     const artist=await Artist.findOne({
         user:mongoose.Types.ObjectId(userId)
     })
     console.log(artist)
     if(artist){ 
-    const item = new Item({
+     item = new Item({
         name,
         description,
         artist:artist._id,
     
     })
-
     await item.save()
+    try{
+        const id = item._id
+        await addImage({id,files})
+    }
+    catch(err){
+        const error   = new Error("Item addition failed")
+        await Item.deleteOne({_id:item._id})
+        throw error
+
+    }
+
     const result= {
         statusCode:201,
         message:"Item added Successfully",
         data:item,
     }
     return result
+
 }
     else{
         const error      = new Error("Please add an artist first")
@@ -38,7 +52,7 @@ add = async({name,description,userId})=>{
 
 fetchAll = async({modQuery})=>{
     const {query,sort,limit} =  modQuery
-    const items = await Item.find(query).sort(sort).limit(limit)
+    const items = await Item.find(query).sort(sort).limit(limit).populate(['images','artist'])
     const result= {
         statusCode:200,
         message:"Items fetched Successfully",
