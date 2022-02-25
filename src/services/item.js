@@ -47,22 +47,6 @@ fetchAll = async({modQuery})=>{
     return result
 }
 
-fetchLoggedInUser = async({userId})=>{
-    const artist = await  Artist.findOne({
-        user:mongoose.Types.ObjectId(userId)
-    })
-    const items  = await  Item.find({
-        artist:mongoose.Types.ObjectId(artist._id)
-
-    }).populate('artist')
-    const result= {
-        statusCode:200,
-        message:"User Items fetched Successfully",
-        data:items,
-    }
-    return result
-}
-
 
 fetchOne = async({id})=>{
     const itemId=mongoose.Types.ObjectId(id)
@@ -147,6 +131,6 @@ module.exports = {
     fetchOne,
     update,
     updateAuctionOrSold,
-    fetchLoggedInUser,
+
     
 }

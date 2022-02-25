@@ -3,7 +3,8 @@ const express = require('express');
 const router = express.Router()
 
 
-const { post,put,get,getAll } = require('../controllers/artist');
+const { post,put,getOne,getAll } = require('../controllers/artist');
+const { isAuthorize } = require('../middlewares/permissions/isAuthorize');
 const { artistValidation } = require('../middlewares/validations/artistValidation');
 const { uploadImage } = require('../middlewares/validations/imageUpload');
 const { isAuth } = require('../middlewares/validations/isAuth');
@@ -11,10 +12,12 @@ const { validateResult } = require('../middlewares/validations/validationResult'
 
 
 
-router.get('/artist',isAuth,get)
+
+
+router.post('/users/:id/artist',isAuth,isAuthorize("MANAGE_ARTIST"),uploadImage,artistValidation,validateResult,post)
 router.get('/artists',isAuth,getAll)
-router.post('/artist',isAuth,artistValidation,validateResult,uploadImage,post)
-router.put('/artist',isAuth,artistValidation,validateResult,uploadImage,put)
+router.get('/artist/:id',isAuth,getOne)
+router.put('/artist/:id',isAuth,isAuthorize("MANAGE_ARTIST"),uploadImage,artistValidation,validateResult,uploadImage,put)
 
 
 module.exports = router;

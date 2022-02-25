@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router()
 
 
-const { post,getAll,getOne,getLoggedInUser,put,putAuctionOrSold} = require('../controllers/item');
+const { post,getAll,getOne,put,putAuctionOrSold} = require('../controllers/item');
 const { isAuthorize } = require('../middlewares/permissions/isAuthorize');
 const { isAuth } = require('../middlewares/validations/isAuth');
 const { itemValidation,auctionValidation } = require('../middlewares/validations/itemValidation');
@@ -10,12 +10,11 @@ const { validateResult } = require('../middlewares/validations/validationResult'
 
 
 
-router.post('/item',isAuth,itemValidation,validateResult,post)
-router.get('/item',isAuth,getLoggedInUser)
+router.post('/item',isAuth,isAuthorize("UPDATE_CREATE_ITEM"),itemValidation,validateResult,post)
 router.get('/items',isAuth,getAll) 
-router.get('/item/:id',isAuth,getOne)
-router.put('/item/:id',isAuth,put)
-router.put('/item/:id/auction',isAuth,isAuthorize("MANAGE_AUCTION"),auctionValidation,validateResult,putAuctionOrSold)
+router.get('/items/:id',isAuth,getOne)
+router.put('/items/:id',isAuth,isAuthorize("UPDATE_CREATE_ITEM"),itemValidation,validateResult,put)
+router.put('/items/:id/auction',isAuth,isAuthorize("MANAGE_AUCTION"),auctionValidation,validateResult,putAuctionOrSold)
 
 
 

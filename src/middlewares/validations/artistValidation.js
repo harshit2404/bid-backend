@@ -7,7 +7,6 @@ const {EmptyValue,InvalidLength,InvalidType} = customError
 
 artistValidation = [
     check("name")
-    .trim()
     .not()
     .isEmpty()
     .withMessage(EmptyValue)

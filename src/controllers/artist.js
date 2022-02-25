@@ -1,4 +1,4 @@
-const { add,update,fetch,fetchAll } = require("../services/artist")
+const { add,update,fetchOne,fetchAll } = require("../services/artist")
 const { enhanceQuery } = require("../utils/queryEnhancer")
 
 
@@ -59,10 +59,10 @@ put = async (req,res) =>{
 
 
 
-get = async (req,res) =>{
+getOne = async (req,res) =>{
     const {userId} = req
     try{
-    const result = await fetch({userId})
+    const result = await fetchOne({userId})
     response({
         res:res,
         statusCode:result.statusCode,
@@ -115,6 +115,6 @@ getAll = async (req,res) =>{
 module.exports = {
     post,
     put,
-    get,
+    getOne,
     getAll
 }

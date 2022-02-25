@@ -1,15 +1,13 @@
 const mongoose = require('mongoose')
 
 const { db } = require("../models");
-const user = require('../models/user');
 const {Artist} = db
 
 
 
-add = async({name,bio,id,files,userId})=>{
-    
+add = async({name,bio,id,files})=>{
     let artist=await Artist.findOne({
-        user:mongoose.Types.ObjectId(userId)
+        user:mongoose.Types.ObjectId(id)
     })
     if(artist){
         const error      = new Error('User is already an artist!')
@@ -25,11 +23,19 @@ add = async({name,bio,id,files,userId})=>{
         artist = new Artist({
             name,
             bio,
-            id,
             photoUrl:files[0].path,
-            user:userId
+            user:mongoose.Types.ObjectId(id)
 
          }) 
+        await User.findOneAndUpdate(
+        {
+            _id:mongoose.Types.ObjectId(id)
+
+        } ,
+        {
+            role:"ROLE_ARTIST"
+        }   
+        )
         await artist.save()
         
         const result= {
@@ -45,10 +51,10 @@ add = async({name,bio,id,files,userId})=>{
 }
 
 
-update = async ({name,bio,files,userId})=>{
+update = async ({name,bio,files,id})=>{
 
     const artist=await Artist.findOne({
-        user:userId
+        _id:mongoose.Types.ObjectId(id)
     })
     artist.name     = name
     artist.bio      = bio
@@ -66,9 +72,9 @@ update = async ({name,bio,files,userId})=>{
 }
 
 
-fetch = async ({userId})=>{
+fetchOne = async ({id})=>{
     const artist=await Artist.findOne({
-        user:mongoose.Types.ObjectId(userId)
+        user:mongoose.Types.ObjectId(id)
     })
     const result= {
         statusCode:200,
@@ -101,6 +107,6 @@ fetchAll = async({modQuery})=>{
 module.exports = {
 add,
 update,
-fetch,
+fetchOne,
 fetchAll
 }

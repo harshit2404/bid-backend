@@ -85,32 +85,6 @@ getOne = async (req,res) =>{
 
 
 
-getLoggedInUser = async (req,res) =>{
-    const {userId} = req
-    try{
-    const result = await fetchLoggedInUser({userId})
-    response({
-        res:res,
-        statusCode:result.statusCode,
-        message:result.message,
-        data:result.data
-
-    })
-    
-    }
-    catch(err){
-        failureResponse({
-            res:res,
-            statusCode:err.statusCode,
-            message:err.message,
-        
-        })
-        
-    }
-}    
-
-
-
 put = async (req,res) =>{
     const {body,userId,params} = req
     let {id} = params
@@ -176,7 +150,6 @@ module.exports = {
     getAll,
     getOne,
     put,
-    getLoggedInUser,
     putAuctionOrSold,
     
 }

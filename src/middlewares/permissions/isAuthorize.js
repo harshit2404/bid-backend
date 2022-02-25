@@ -7,10 +7,12 @@ const {User} = db
 
 
 isAuthorize=(perm)=>{
+
     return async (req,res,next)=>{
     const rolePermissions = {
-        "ROLE_ADMIN":["MANAGE_AUCTION"],
-        "ROLE_USER":[""]
+        "ROLE_ADMIN":["MANAGE_AUCTION","MANAGE_ARTIST","UPDATE_CREATE_ITEM"],
+        "ROLE_USER":[""],
+        "ROLE_ARTIST":["UPDATE_CREATE_ITEM"],
     }
     const {userId} = req
 
@@ -26,7 +28,6 @@ isAuthorize=(perm)=>{
         hasPermission = true
     }}
     if(hasPermission){
-        console.log('sd')
         return next()
     }
     else{
@@ -34,7 +35,7 @@ isAuthorize=(perm)=>{
         error.statusCode = 401
         failureResponse({
          res:res,
-         statusCode:statusCode,
+         statusCode:error.statusCode,
          message:error.message,
      })
     }
