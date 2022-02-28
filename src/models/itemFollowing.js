@@ -4,13 +4,13 @@ const Schema = mongoose.Schema
 
 const ItemFollowingSchema =  new Schema({
     
-    item:{
+    itemId:{
         type:Schema.Types.ObjectId,
         ref: 'Artist',
         required:true,
     },
    
-   user:{
+   userId:{
     type:Schema.Types.ObjectId,
     ref: 'User',
     required:true
@@ -24,7 +24,24 @@ const ItemFollowingSchema =  new Schema({
 },
    
 
-});
+},{
+    toObject: {virtuals:true},
+    toJSON: {virtuals:true}
+   });
+
+
+ItemFollowingSchema.virtual('user',{
+    ref:'User',
+    localField:'userId',
+    foreignField:'_id',
+})
+
+
+ItemFollowingSchema.virtual('item',{
+    ref:'Item',
+    localField:'itemId',
+    foreignField:'_id',
+})
 
 
 

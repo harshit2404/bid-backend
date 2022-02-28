@@ -17,23 +17,40 @@ const CommentSchema =  new Schema({
         type:Date,
         required:false,
     },
-   user:{
+   userId:{
     type:Schema.Types.ObjectId,
     ref: 'User',
     required:true
 
    },
-   post:{
+   postId:{
        type:Schema.Types.ObjectId,
        ref: 'Item',
        required:true,
    }
 
-});
+},{
+    toObject: {virtuals:true},
+    toJSON: {virtuals:true}
+   });
 
 CommentSchema.pre('save',function(next){
     this.updatedAt = Date.now()
     next()
+})
+
+
+CommentSchema.virtual('user',{
+    ref:'User',
+    localField:'userId',
+    foreignField:'_id',
+})
+
+
+CommentSchema.virtual('post',{
+    ref:'Item',
+    localField:'postId',
+    foreignField:'_id',
 })
 
 

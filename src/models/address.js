@@ -31,13 +31,23 @@ const AddressSchema =  new Schema({
         required:true
     
     },
-    user:{
+    userId:{
         type:Schema.Types.ObjectId,
         ref: 'User',
         required:true
     }
 
-});
+},{
+    toObject: {virtuals:true},
+    toJSON: {virtuals:true}
+   });
+
+
+AddressSchema.virtual('user',{
+    ref:'User',
+    localField:'userId',
+    foreignField:'_id',
+})
 
 
 

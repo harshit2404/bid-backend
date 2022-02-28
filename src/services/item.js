@@ -8,14 +8,13 @@ const {Item,Artist} = db
 add = async({name,description,files,userId})=>{
     let item;
     const artist=await Artist.findOne({
-        user:mongoose.Types.ObjectId(userId)
+        userId:mongoose.Types.ObjectId(userId)
     })
-    console.log(artist)
     if(artist){ 
      item = new Item({
         name,
         description,
-        artist:artist._id,
+        artistId:artist._id,
     
     })
     await item.save()
@@ -49,10 +48,9 @@ add = async({name,description,files,userId})=>{
 }
 
 
-
 fetchAll = async({modQuery})=>{
     const {query,sort,limit} =  modQuery
-    const items = await Item.find(query).sort(sort).limit(limit).populate(['images','artist'])
+    const items = await Item.find(query).sort(sort).limit(limit).populate(['artist','images'])
     const result= {
         statusCode:200,
         message:"Items fetched Successfully",
@@ -66,7 +64,7 @@ fetchOne = async({id})=>{
     const itemId=mongoose.Types.ObjectId(id)
     const item = await Item.findOne({
         _id:itemId,
-    }).populate('artist')
+    }).populate(['images','artist'])
 
     const result= {
         statusCode:200,
@@ -78,7 +76,7 @@ fetchOne = async({id})=>{
 
 update = async({name,description,userId,id})=>{
     const artist = await Artist.findOne({
-        user:mongoose.Types.ObjectId(userId)
+        userId:mongoose.Types.ObjectId(userId)
     })
     const item   =   await Item.findOne({
         _id:mongoose.Types.ObjectId(id)

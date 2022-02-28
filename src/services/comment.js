@@ -10,8 +10,8 @@ const {Comment,Item} = db
 add = async({comment,userId,id})=>{
     const userComment = new Comment({
         comment,
-        post:id,
-        user:userId
+        postId:id,
+        userId:userId
     })
     await userComment.save()
     const result= {
@@ -26,7 +26,7 @@ add = async({comment,userId,id})=>{
 fetchAll = async({id})=>{
 
     const comments = await Comment.find({
-        post:mongoose.Types.ObjectId(id),
+        postId:mongoose.Types.ObjectId(id),
     
     }).populate('user','-password')
 
@@ -41,7 +41,7 @@ fetchAll = async({id})=>{
 
 getOne = async({id,commentId})=>{
     const comment = await Comment.fetchOne({
-        post:mongoose.Types.ObjectId(id),
+        postId:mongoose.Types.ObjectId(id),
         _id :mongoose.Types.ObjectId(commentId)
     
     })
@@ -58,8 +58,8 @@ getOne = async({id,commentId})=>{
 update= async({comment,id,commentId,userId})=>{
     const userComment = await Comment.findOne({
         _id:mongoose.Types.ObjectId(commentId),
-        post:mongoose.Types.ObjectId(id),
-        user:mongoose.Types.ObjectId(userId)
+        postId:mongoose.Types.ObjectId(id),
+        userId:mongoose.Types.ObjectId(userId)
 
     })
     if(userComment){

@@ -14,7 +14,7 @@ add = async ({address1,address2,address3,city,state,country,postalcode,userId})=
         state,
         country,
         postalcode,
-        user:userId,
+        userId,
         
     })
 
@@ -31,7 +31,7 @@ add = async ({address1,address2,address3,city,state,country,postalcode,userId})=
 
 fetchAll = async({userId})=>{
     const addresses=await Address.find({
-        user:mongoose.Types.ObjectId(userId)
+        userId:mongoose.Types.ObjectId(userId)
     }).populate('user')
     const result= {
         statusCode:200,

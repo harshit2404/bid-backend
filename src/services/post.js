@@ -8,7 +8,7 @@ const { Item } = db
 fetchAll = async({modQuery})=>{
     const {query,sort,limit} =  modQuery
     query.bidStatus = 'AUCTION'
-    const items = await Item.find(query).sort(sort).limit(limit).populate('artist')
+    const items = await Item.find(query).sort(sort).limit(limit).populate(['images','artist'])
     const result= {
         statusCode:200,
         message:"Items fetched Successfully",
@@ -39,7 +39,7 @@ fetchOne = async({id})=>{
      const post = await Item.findOne({
          _id:mongoose.Types.ObjectId(id),
          bidStatus:'AUCTION'
-     })
+     }).populate('images')
      console.log(post)
  
      const result= {

@@ -19,14 +19,24 @@ const ArtistSchema =  new Schema({
        type:String,
        required:false
    },
-   user:{
+   userId:{
     type:Schema.Types.ObjectId,
     ref: 'User',
     required:true
 
    }
 
-});
+},{
+    toObject: {virtuals:true},
+    toJSON: {virtuals:true}
+   });
+
+
+ArtistSchema.virtual('user',{
+    ref:'User',
+    localField:'userId',
+    foreignField:'_id',
+})
 
 
 

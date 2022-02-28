@@ -1,13 +1,14 @@
 const mongoose = require('mongoose')
 
 const { db } = require("../models");
-const {Artist} = db
+const {Artist,User} = db
 
 
 
 add = async({name,bio,id,files})=>{
+    
     let artist=await Artist.findOne({
-        user:mongoose.Types.ObjectId(id)
+        userId:mongoose.Types.ObjectId(id)
     })
     if(artist){
         const error      = new Error('User is already an artist!')
@@ -15,6 +16,9 @@ add = async({name,bio,id,files})=>{
         throw error 
     }
     else{
+        const session = await mongoose.startSession()
+        try{
+        session.startTransaction()    
         if(await Artist.findOne({name})){
             const error      = new Error('Artist name already taken')
             error.statusCode = 400
@@ -24,9 +28,9 @@ add = async({name,bio,id,files})=>{
             name,
             bio,
             photoUrl:files[0].path,
-            user:mongoose.Types.ObjectId(id)
+            userId:mongoose.Types.ObjectId(id)
 
-         }) 
+         },{session}) 
         await User.findOneAndUpdate(
         {
             _id:mongoose.Types.ObjectId(id)
@@ -34,9 +38,14 @@ add = async({name,bio,id,files})=>{
         } ,
         {
             role:"ROLE_ARTIST"
+        },
+        {
+            session
         }   
         )
-        await artist.save()
+        await artist.save({session})
+        await session.commitTransaction();
+        await session.endSession();
         
         const result= {
             statusCode:200,
@@ -46,7 +55,11 @@ add = async({name,bio,id,files})=>{
         }
         return result
 
-    }
+    }catch(err){
+        await session.abortTransaction()
+        throw err
+    }}
+    
 
 }
 
@@ -74,7 +87,7 @@ update = async ({name,bio,files,id})=>{
 
 fetchOne = async ({id})=>{
     const artist=await Artist.findOne({
-        user:mongoose.Types.ObjectId(id)
+        userId:mongoose.Types.ObjectId(id)
     })
     const result= {
         statusCode:200,
@@ -91,7 +104,7 @@ fetchOne = async ({id})=>{
 fetchAll = async({modQuery})=>{
     const {query,sort,limit} =  modQuery
     console.log(query)
-    const artists = await Artist.find(query).sort(sort).limit(limit)
+    const artists = await Artist.find(query).sort(sort).limit(limit).populate('user')
     const result= {
         statusCode:200,
         message:"Artists fetched Successfully",

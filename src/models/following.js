@@ -4,13 +4,13 @@ const Schema = mongoose.Schema
 
 const FollowingSchema =  new Schema({
     
-    artist:{
+    artistId:{
         type:Schema.Types.ObjectId,
         ref: 'Artist',
         required:true,
     },
    
-   user:{
+   userId:{
     type:Schema.Types.ObjectId,
     ref: 'User',
     required:true
@@ -24,7 +24,24 @@ const FollowingSchema =  new Schema({
 },
    
 
-});
+},{
+    toObject: {virtuals:true},
+    toJSON: {virtuals:true}
+   });
+
+
+FollowingSchema.virtual('user',{
+    ref:'User',
+    localField:'userId',
+    foreignField:'_id',
+})
+
+
+FollowingSchema.virtual('artist',{
+    ref:'Artist',
+    localField:'artistId',
+    foreignField:'_id',
+})
 
 
 

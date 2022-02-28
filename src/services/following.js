@@ -6,18 +6,18 @@ const {Following} = db
 add = async({id,userId})=>{
     let following;
     following  = await Following.findOne({
-        user:mongoose.Types.ObjectId(userId),
-        artist:mongoose.Types.ObjectId(id)
+        userId:mongoose.Types.ObjectId(userId),
+        artistId:mongoose.Types.ObjectId(id)
     })
-    console.log(following)
+
     if(following){
         const error = new Error('You already followed this user')
         error.statusCode = 400
         throw error
     }
     following  = new Following({
-        user:userId,
-        artist:id
+        userId:userId,
+        artistId:id
     })
     await following.save()
     const result= {
@@ -33,8 +33,8 @@ add = async({id,userId})=>{
 destroy = async({id,userId})=>{
     let following;
     following  = await Following.findOne({
-        user:userId,
-        artist:id
+        userId:userId,
+        artistId:id
     })
     if(!following){
         const error = new Error('You already not following this user')
@@ -42,8 +42,8 @@ destroy = async({id,userId})=>{
         throw error
     }
     await Following.deleteOne({
-        user:mongoose.Types.ObjectId(userId),
-        artist:mongoose.Types.ObjectId(id)
+        userId:mongoose.Types.ObjectId(userId),
+        artistId:mongoose.Types.ObjectId(id)
     })
     const result= {
         statusCode:200,

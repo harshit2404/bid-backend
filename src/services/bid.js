@@ -5,8 +5,8 @@ const {Bid}  = db
 
 add = async ({bidAmount,userId,id})=>{
     let bid=await Bid.findOne({
-        user:mongoose.Types.ObjectId(userId),
-        item:mongoose.Types.ObjectId(id)
+        userId:mongoose.Types.ObjectId(userId),
+        itemId:mongoose.Types.ObjectId(id)
     })
     if(bid){
         const error      = new Error("You alreadyy bid for this item!Please update your previous bid")
@@ -15,7 +15,7 @@ add = async ({bidAmount,userId,id})=>{
     }
     bid = new Bid({
         bidAmount,
-        user:userId,
+        userId:userId,
         item:id
 
     })
@@ -32,8 +32,8 @@ add = async ({bidAmount,userId,id})=>{
 update = async({bidAmount,userId,id})=>{
 
     const bid = await Bid.findOne({
-        user:mongoose.Types.ObjectId(userId),
-        item:mongoose.Types.ObjectId(id)
+        userId:mongoose.Types.ObjectId(userId),
+        itemId:mongoose.Types.ObjectId(id)
     })
     
     bid.bidAmount = bidAmount
@@ -51,7 +51,7 @@ update = async({bidAmount,userId,id})=>{
 fetchItem = async({id})=>{
 
     const bids=await Bid.find({
-        item:mongoose.Types.ObjectId(id)
+        itemId:mongoose.Types.ObjectId(id)
 
     }).populate('user')
 
@@ -67,11 +67,11 @@ fetchItem = async({id})=>{
 fetchCurrent = async({userId,id})=>{
     let message;
     const currentBid = await Bid.findOne({
-        item:mongoose.Types.ObjectId(id),
-        user:mongoose.Types.ObjectId(userId)
+        itemId:mongoose.Types.ObjectId(id),
+        userId:mongoose.Types.ObjectId(userId)
     })
     const highestBid=await Bid.find({
-        item:mongoose.Types.ObjectId(id)
+        itemId:mongoose.Types.ObjectId(id)
     }).select('bidAmount').sort({'bidAmount':-1}).limit(1)
     
     if(currentBid.bidAmount<highestBid.bidAmount){
@@ -94,7 +94,7 @@ fetchCurrent = async({userId,id})=>{
 fetchHighest = async({id})=>{
 
     const bid=await Bid.find({
-        item:mongoose.Types.ObjectId(id)
+        itemId:mongoose.Types.ObjectId(id)
     }).select('bidAmount').sort({'bidAmount':-1}).limit(1).populate('user')
     const result= {
         statusCode:200,

@@ -6,13 +6,9 @@ const ItemImageSchema =  new Schema({
         type:String,
         required:true,
     },
-    item:{
+    itemId:{
         type:Schema.Types.ObjectId,
         ref: 'Item',
-        required:true
-    },
-    photoUrl:{
-        type:String,
         required:true
     },
     uploadedAt:{
@@ -21,7 +17,18 @@ const ItemImageSchema =  new Schema({
         default:Date.now
     }
 
-});
+},{
+    toObject: {virtuals:true},
+    toJSON: {virtuals:true}
+   });
+
+
+
+ItemImageSchema.virtual('item',{
+    ref:'Item',
+    localField:'itemId',
+    foreignField:'_id',
+})
 
 
 

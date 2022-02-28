@@ -6,8 +6,8 @@ const {ItemFollowing} = db
 
 add = async({id,userId})=>{
     const following = new ItemFollowing({
-        item:mongoose.Types.ObjectId(id),
-        user:mongoose.Types.ObjectId(userId)
+        itemId:mongoose.Types.ObjectId(id),
+        userId:mongoose.Types.ObjectId(userId)
     })
     await following.save()
     const result= {
@@ -22,7 +22,7 @@ add = async({id,userId})=>{
 
 fetchAll  = async({id})=>{
    const following= await ItemFollowing.find({
-    item:mongoose.Types.ObjectId(id)
+    itemId:mongoose.Types.ObjectId(id)
     }).select('user','followedAt').populate('user')
    const count    = await ItemFollowing.count() 
    const result= {
@@ -39,8 +39,8 @@ return result
 
 destroy = async({id,userId})=>{
     await ItemFollowing.deleteOne({
-        item:mongoose.Types.ObjectId(id),
-        user:mongoose.Types.ObjectId(userId)
+        itemId:mongoose.Types.ObjectId(id),
+        userId:mongoose.Types.ObjectId(userId)
     })
     const result= {
         statusCode:200,

@@ -10,7 +10,7 @@ const { validateResult } = require('../middlewares/validations/validationResult'
 const { uploadImage } = require('../middlewares/validations/imageUpload');
 
 
-router.post('/items',isAuth,isAuthorize("UPDATE_CREATE_ITEM"),itemValidation,validateResult,uploadImage,post)
+router.post('/items',isAuth,isAuthorize("UPDATE_CREATE_ITEM"),uploadImage,itemValidation,validateResult,post)
 router.get('/items',isAuth,getAll) 
 router.get('/items/:id',isAuth,getOne)
 router.put('/items/:id',isAuth,isAuthorize("UPDATE_CREATE_ITEM"),itemValidation,validateResult,put)
