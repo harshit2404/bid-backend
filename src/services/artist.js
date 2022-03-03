@@ -107,9 +107,9 @@ fetchOne = async ({id})=>{
 
 
 fetchAll = async({modQuery})=>{
-    const {query,sort,limit} =  modQuery
+    const {query,sort,limit,skip} =  modQuery
     console.log(query)
-    const artists = await Artist.find(query).sort(sort).limit(limit)
+    const artists = await Artist.find(query).sort(sort).limit(limit).skip(skip)
     const result= {
         statusCode:200,
         message:"Artists fetched Successfully",

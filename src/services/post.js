@@ -6,9 +6,9 @@ const { Item } = db
 
 
 fetchAll = async({modQuery})=>{
-    const {query,sort,limit} =  modQuery
+    const {query,sort,limit,skip} =  modQuery
     query.bidStatus = 'AUCTION'
-    const items = await Item.find(query).sort(sort).limit(limit)
+    const items = await Item.find(query).sort(sort).limit(limit).skip(skip)
     const result= {
         statusCode:200,
         message:"Items fetched Successfully",

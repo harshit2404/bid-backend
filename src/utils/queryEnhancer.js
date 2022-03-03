@@ -1,12 +1,17 @@
 //{ query: { username: 'harry244715' }, limit: undefined, sort: {} }
 
 enhanceQuery =  async({query})=>{
-    let limit,sort={} ;
+    let skip,limit,sort={} ;
 
     if(query['limit']){
         limit = Number(query['limit'])
         delete query['limit']
  
+    }
+    if(query['skip']){
+        skip = Number(query['skip'])
+        delete query['skip']
+
     }
     if(query['sort']){
         sort[query.sort] = parseInt(query.value)
@@ -15,10 +20,20 @@ enhanceQuery =  async({query})=>{
  
     }  
 
+    const key=Object.keys(query)[0]
+    console.log(typeof(key))
+    const value=Object.values(query)[0]
+    const moQ = {}
+    moQ["$regex"] = value
+    moQ["$options"] = "i"
+    query[key] = moQ
+    
+
     let modifiedQuery = {
         query,
         limit,
-        sort
+        sort,
+        skip
     }
     return modifiedQuery
     

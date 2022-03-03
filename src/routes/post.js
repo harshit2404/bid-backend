@@ -8,7 +8,7 @@ const { isAuth } = require('../middlewares/validations/isAuth');
 
 
 
-router.get('/post',isAuth,getAll)
+router.get('/posts',isAuth,getAll)
 router.get('/posts/:id',isAuth,getOne)
 
 module.exports  = router

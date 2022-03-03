@@ -49,8 +49,9 @@ add = async({name,description,files,userId})=>{
 
 
 fetchAll = async({modQuery})=>{
-    const {query,sort,limit} =  modQuery
-    const items = await Item.find(query).sort(sort).limit(limit)
+    const {query,sort,limit,skip} =  modQuery
+    const items = await Item.find(query).sort(sort).limit(limit).skip(skip)
+
         
     const result= {
         statusCode:200,
