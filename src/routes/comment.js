@@ -7,8 +7,8 @@ const { isAuth } = require('../middlewares/validations/isAuth');
 
 router.post('/posts/:id/comment',isAuth,post)
 router.get('/posts/:id/comment',isAuth,getAll)
-router.get('/posts/:id/comment/:id',isAuth,getOne)
-router.put('/posts/:id/comment/:id',isAuth,put)
+router.get('/posts/:id/comment/:commentId',isAuth,getOne)
+router.put('/posts/:id/comment/:commentId',isAuth,put)
 
 
 

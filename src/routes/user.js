@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router()
 
-const { signup, signin, getAll, put,putPassword } = require('../controllers/user');
+const { signup, signin, getAll, put,putPassword, getAddress, getArtist } = require('../controllers/user');
 const { isAuth } = require('../middlewares/validations/isAuth');
 const { passwordValidation } = require('../middlewares/validations/passwordValidation');
 const { signupValidation } = require('../middlewares/validations/userValidation');
@@ -15,6 +15,8 @@ router.get('/users',isAuth,getAll)
 router.get('/users/:id',isAuth,getOne)
 router.put('/users/:id',isAuth,signupValidation,validateResult,put)
 router.put('/user/:id/password',isAuth,passwordValidation,validateResult,putPassword)
+router.get('/users/:id/address',isAuth,getAddress)
+router.get('/users/:id/artist',getArtist)
 
 
 

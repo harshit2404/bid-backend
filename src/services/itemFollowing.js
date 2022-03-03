@@ -23,7 +23,7 @@ add = async({id,userId})=>{
 fetchAll  = async({id})=>{
    const following= await ItemFollowing.find({
     itemId:mongoose.Types.ObjectId(id)
-    }).select('user','followedAt').populate('user')
+    }).select('user','followedAt')
    const count    = await ItemFollowing.count() 
    const result= {
     statusCode:201,

@@ -4,7 +4,7 @@ const jwt    = require('jsonwebtoken')
 require('dotenv').config()
 
 const { db } = require("../models");
-const {User} = db
+const {Address,User,Artist} = db
 
 add = async({username,email,password,firstname,lastname,phoneNumber,stripePaymentId,isActive})=>{
 
@@ -173,6 +173,36 @@ updatePassword = async({id,previousPassword,newPassword,userId})=>{
 
 }
 
+fetchAddress = async({id})=>{
+
+  const addresses=  await Address.findOne({
+        userId:mongoose.Types.ObjectId(id)
+
+    })
+    const result= {
+        statusCode:200,
+        message:"Addresses fetched Successfully",
+        data:addresses
+    }
+    return result
+
+
+}
+
+fetchArtist = async({id})=>{
+
+   const artist= await Artist.findOne({
+        artistId:mongoose.Types.ObjectId(id)
+    })
+    const result= {
+        statusCode:200,
+        message:"Artist fetched Successfully",
+        data:artist
+    }
+    return result 
+
+}
+
 module.exports = {
     add,
     login,
@@ -180,4 +210,6 @@ module.exports = {
     fetchOne,
     update,
     updatePassword,
+    fetchAddress,
+    fetchArtist,
 }

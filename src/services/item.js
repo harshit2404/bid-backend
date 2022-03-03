@@ -50,7 +50,8 @@ add = async({name,description,files,userId})=>{
 
 fetchAll = async({modQuery})=>{
     const {query,sort,limit} =  modQuery
-    const items = await Item.find(query).sort(sort).limit(limit).populate(['artist','images'])
+    const items = await Item.find(query).sort(sort).limit(limit)
+        
     const result= {
         statusCode:200,
         message:"Items fetched Successfully",
@@ -64,7 +65,7 @@ fetchOne = async({id})=>{
     const itemId=mongoose.Types.ObjectId(id)
     const item = await Item.findOne({
         _id:itemId,
-    }).populate(['images','artist'])
+    })
 
     const result= {
         statusCode:200,

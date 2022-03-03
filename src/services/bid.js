@@ -53,7 +53,7 @@ fetchItem = async({id})=>{
     const bids=await Bid.find({
         itemId:mongoose.Types.ObjectId(id)
 
-    }).populate('user')
+    })
 
     const result= {
         statusCode:200,
@@ -95,7 +95,7 @@ fetchHighest = async({id})=>{
 
     const bid=await Bid.find({
         itemId:mongoose.Types.ObjectId(id)
-    }).select('bidAmount').sort({'bidAmount':-1}).limit(1).populate('user')
+    }).select('bidAmount').sort({'bidAmount':-1}).limit(1)
     const result= {
         statusCode:200,
         message:"Highest Bid fetched Successfully",

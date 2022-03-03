@@ -24,13 +24,18 @@ add = async({name,bio,id,files})=>{
             error.statusCode = 400
             throw error
         }
+        console.log('kjk')
+        console.log(artist)
         artist = new Artist({
             name,
             bio,
             photoUrl:files[0].path,
             userId:mongoose.Types.ObjectId(id)
 
-         },{session}) 
+         }) 
+        
+        await artist.save({session}) 
+        console.log(artist)
         await User.findOneAndUpdate(
         {
             _id:mongoose.Types.ObjectId(id)
@@ -43,7 +48,7 @@ add = async({name,bio,id,files})=>{
             session
         }   
         )
-        await artist.save({session})
+        console.log(artist)
         await session.commitTransaction();
         await session.endSession();
         
@@ -87,7 +92,7 @@ update = async ({name,bio,files,id})=>{
 
 fetchOne = async ({id})=>{
     const artist=await Artist.findOne({
-        userId:mongoose.Types.ObjectId(id)
+        _id:mongoose.Types.ObjectId(id)
     })
     const result= {
         statusCode:200,
@@ -104,7 +109,7 @@ fetchOne = async ({id})=>{
 fetchAll = async({modQuery})=>{
     const {query,sort,limit} =  modQuery
     console.log(query)
-    const artists = await Artist.find(query).sort(sort).limit(limit).populate('user')
+    const artists = await Artist.find(query).sort(sort).limit(limit)
     const result= {
         statusCode:200,
         message:"Artists fetched Successfully",

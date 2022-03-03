@@ -16,8 +16,8 @@ const { validateResult } = require('../middlewares/validations/validationResult'
 
 router.post('/users/:id/artist',isAuth,isAuthorize("MANAGE_ARTIST"),uploadImage,artistValidation,validateResult,post)
 router.get('/artists',isAuth,getAll)
-router.get('/artist/:id',isAuth,getOne)
-router.put('/artist/:id',isAuth,isAuthorize("MANAGE_ARTIST"),uploadImage,artistValidation,validateResult,uploadImage,put)
+router.get('/artists/:id',isAuth,getOne)
+router.put('/artists/:id',isAuth,isAuthorize("MANAGE_ARTIST"),uploadImage,artistValidation,validateResult,uploadImage,put)
 
 
 module.exports = router;

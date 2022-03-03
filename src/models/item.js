@@ -18,7 +18,8 @@ const ItemSchema =  new Schema({
     },
     bidEndTime:{
         type:Date,
-        required:false
+        required:false,
+        default:null
     },
     
     bidStatus:{

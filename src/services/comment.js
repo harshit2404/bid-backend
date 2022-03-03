@@ -2,7 +2,7 @@ const {mongoose } = require("mongoose")
 
 
 const { db } = require("../models")
-const {Comment,Item} = db
+const {Comment} = db
 
 
 
@@ -28,7 +28,8 @@ fetchAll = async({id})=>{
     const comments = await Comment.find({
         postId:mongoose.Types.ObjectId(id),
     
-    }).populate('user','-password')
+    })
+    console.log(comments)
 
     const result= {
         statusCode:200,
@@ -39,12 +40,16 @@ fetchAll = async({id})=>{
 
 }
 
-getOne = async({id,commentId})=>{
-    const comment = await Comment.fetchOne({
+fetchOne = async({id,commentId})=>{
+    console.log(id)
+    console.log(commentId)
+    const comment = await Comment.findOne({
         postId:mongoose.Types.ObjectId(id),
         _id :mongoose.Types.ObjectId(commentId)
     
     })
+    console.log('heey')
+    console.log(comment)
 
     const result= {
         statusCode:200,

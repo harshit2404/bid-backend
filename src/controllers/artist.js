@@ -60,9 +60,10 @@ put = async (req,res) =>{
 
 
 getOne = async (req,res) =>{
-    const {userId} = req
+    const {params} = req
+    const {id}     = params
     try{
-    const result = await fetchOne({userId})
+    const result = await fetchOne({id})
     response({
         res:res,
         statusCode:result.statusCode,

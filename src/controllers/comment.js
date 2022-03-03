@@ -31,7 +31,6 @@ post = async (req,res) =>{
 
 getAll = async (req,res) =>{
     const {id}  = req.params
-    console.log('sdsds')
 
     try{
     const result = await fetchAll({id})
@@ -59,6 +58,7 @@ getAll = async (req,res) =>{
 
 
 getOne = async (req,res) =>{
+    console.log('hh')
     const {id,commentId}  = req.params
 
     try{

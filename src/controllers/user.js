@@ -1,4 +1,4 @@
-const { add, login, fetchAll, fetchOne, update,updatePassword } = require("../services/user");
+const { add, login, fetchAll, fetchOne, update,updatePassword,fetchAddress, fetchArtist } = require("../services/user");
 const { enhanceQuery } = require("../utils/queryEnhancer");
 const { response,failureResponse } = require("../utils/result");
 
@@ -164,6 +164,63 @@ putPassword = async (req,res) =>{
 
 
 
+getAddress = async (req,res) =>{
+    const {params} = req
+    let {id}     = params
+    try{
+    const result = await fetchAddress({id})
+    response({
+        res:res,
+        statusCode:result.statusCode,
+        message:result.message,
+        data:result.data
+
+    })
+    
+    }
+    catch(err){
+        failureResponse({
+            res:res,
+            statusCode:err.statusCode,
+            message:err.message,
+        
+        })
+        
+    }
+}    
+
+
+
+
+getArtist = async (req,res) =>{
+    const {params} = req
+    let {id}     = params
+    try{
+    const result = await fetchArtist({id})
+    response({
+        res:res,
+        statusCode:result.statusCode,
+        message:result.message,
+        data:result.data
+
+    })
+    
+    }
+    catch(err){
+        failureResponse({
+            res:res,
+            statusCode:err.statusCode,
+            message:err.message,
+        
+        })
+        
+    }
+}    
+
+
+
+
+
 
 module.exports = {
     signup,
@@ -172,6 +229,8 @@ module.exports = {
     getOne,
     put,
     putPassword,
+    getAddress,
+    getArtist,
 }
 
 
