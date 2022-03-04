@@ -1,4 +1,4 @@
-const mongoose = require('mongoose')
+const mongoose = require('mongoose');
 const Schema = mongoose.Schema
 
 const ItemSchema =  new Schema({
@@ -32,7 +32,7 @@ const ItemSchema =  new Schema({
         required:false
     
     },
-    artist:{
+    artistId:{
         type:Schema.Types.ObjectId,
         ref: 'Artist',
         required:false
@@ -45,12 +45,36 @@ const ItemSchema =  new Schema({
    });
 
 
+
+
 ItemSchema.virtual('images',{
     ref:'ItemImage',
     localField:'_id',
     foreignField:'itemId',
+    autopopulate:true,
 })
 
+
+
+ItemSchema.virtual('artist',{
+    ref:'Artist',
+    localField:'artistId',
+    foreignField:'_id',
+})
+
+/*
+ItemSchema.virtual('img').get(function(){
+    const { db } = require('.');
+    const {ItemImage} = db
+    ItemImage.find({
+    itemId:this._id
+},function(err,doc){
+    console.log(doc)
+    return doc
+})
+})
+
+*/
 
 
 module.exports = mongoose.model("Item",ItemSchema)

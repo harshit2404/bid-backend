@@ -39,7 +39,7 @@ isAuth = async(req,res,next)=>{
         const error = new Error('Unauthorized Access')
         failureResponse({
             res:res,
-            message:err.message,
+            message:error.message,
             statusCode:401,
         
         })

@@ -4,12 +4,12 @@ const { enhanceQuery } = require("../utils/queryEnhancer")
 
 
 post = async (req,res) =>{
-    const {body,params,files,userId} = req
+    const {body,params,files,userId,protocol,hostname} = req
     let {id} = params
     const {name,bio} = body
     
     try{
-    const result = await add({name,bio,id,files,userId})
+    const result = await add({name,bio,id,files,userId,protocol,hostname})
     response({
         res:res,
         statusCode:result.statusCode,
@@ -33,10 +33,10 @@ post = async (req,res) =>{
 
 
 put = async (req,res) =>{
-    const {body,files,userId} = req
+    const {body,files,userId,protocol,hostname} = req
     const {name,bio} = body
     try{
-    const result = await update({name,bio,files,userId})
+    const result = await update({name,bio,files,userId,protocol,hostname})
     response({
         res:res,
         statusCode:result.statusCode,

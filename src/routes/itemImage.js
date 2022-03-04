@@ -9,9 +9,9 @@ const { isAuth } = require('../middlewares/validations/isAuth');
 
 
 
-router.post('/items/:id/image',isAuth,isAuthorize("UPDATE_CREATE_ITEM"),uploadImage,post)
-router.get('/items/:id/image',isAuth,getAll)
-router.delete('/items/:id/image/:imgId',isAuthorize("UPDATE_CREATE_ITEM"),isAuth,del)
+router.post('/items/:id/images',isAuth,uploadImage,post)
+router.get('/items/:id/images',isAuth,getAll)
+router.delete('/items/:id/images/:imgId',del)
 
 
 

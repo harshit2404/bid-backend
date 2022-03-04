@@ -5,11 +5,12 @@ const { add:addImage } = require('./itemImage')
 const {Item,Artist} = db
 
 
-add = async({name,description,files,userId})=>{
+add = async({name,description,files,userId,protocol,host})=>{
     let item;
     const artist=await Artist.findOne({
         userId:mongoose.Types.ObjectId(userId)
     })
+    console.log(artist)
     if(artist){ 
      item = new Item({
         name,
@@ -18,9 +19,10 @@ add = async({name,description,files,userId})=>{
     
     })
     await item.save()
+    console.log(item)
     try{
         const id = item._id
-        await addImage({id,files})
+        await addImage({id,files,protocol,host})
     }
     catch(err){
         const error   = new Error("Item addition failed")
@@ -51,6 +53,21 @@ add = async({name,description,files,userId})=>{
 fetchAll = async({modQuery})=>{
     const {query,sort,limit,skip} =  modQuery
     const items = await Item.find(query).sort(sort).limit(limit).skip(skip)
+   /*const items = await Item.aggregate([
+        {
+            $lookup:{
+                from: "Artist",
+                localField:"artistId",
+                foreignField:"_id",
+                as:"artistId"
+            },
+            
+        },{
+            $unwind:"$artistId"
+        }
+        
+    ])*/
+    
 
         
     const result= {
@@ -67,6 +84,7 @@ fetchOne = async({id})=>{
     const item = await Item.findOne({
         _id:itemId,
     })
+    
 
     const result= {
         statusCode:200,
@@ -83,9 +101,10 @@ update = async({name,description,userId,id})=>{
     const item   =   await Item.findOne({
         _id:mongoose.Types.ObjectId(id)
     }).populate('artist')
-    const {artist:itemArtist} = item
+    
+    const itemArtist = item.artistId
   
-    if(!itemArtist._id.equals(artist._id)){
+    if(!itemArtist.equals(artist._id)){
         const error      = new Error('You are not authorized to update this')
         error.statusCode = 401
         throw error

@@ -5,8 +5,9 @@ const {Artist,User} = db
 
 
 
-add = async({name,bio,id,files})=>{
+add = async({name,bio,id,files,protocol,hostname})=>{
     
+
     let artist=await Artist.findOne({
         userId:mongoose.Types.ObjectId(id)
     })
@@ -26,10 +27,12 @@ add = async({name,bio,id,files})=>{
         }
         console.log('kjk')
         console.log(artist)
+        let path = files[0].path
+        path   = path.replace('\\','/')
         artist = new Artist({
             name,
             bio,
-            photoUrl:files[0].path,
+            photoUrl:protocol+"://"+hostname+':'+`${process.env.PORT||3000}`+'/'+path,
             userId:mongoose.Types.ObjectId(id)
 
          }) 
@@ -69,14 +72,15 @@ add = async({name,bio,id,files})=>{
 }
 
 
-update = async ({name,bio,files,id})=>{
-
+update = async ({name,bio,files,id,protocol,hostname})=>{   
+    let path = files[0].path
+    path   = path.replace('\\','/')
     const artist=await Artist.findOne({
         _id:mongoose.Types.ObjectId(id)
     })
     artist.name     = name
     artist.bio      = bio
-    artist.photoUrl = files[0].path 
+    artist.photoUrl = protocol+"://"+hostname+':'+`${process.env.PORT||3000}`+'/'+path,
     await artist.save()
 
     const result= {

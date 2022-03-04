@@ -21,7 +21,6 @@ enhanceQuery =  async({query})=>{
     }  
 
     const key=Object.keys(query)[0]
-    console.log(typeof(key))
     const value=Object.values(query)[0]
     const moQ = {}
     moQ["$regex"] = value

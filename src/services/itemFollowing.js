@@ -1,6 +1,8 @@
 const {  mongoose } = require("mongoose")
+const { db } = require("../models")
 
-const { db } = require("../models/itemFollowing")
+
+
 const {ItemFollowing} = db
 
 

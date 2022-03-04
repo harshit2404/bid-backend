@@ -1,13 +1,17 @@
 const mongoose = require('mongoose')
+require('dotenv').config()
+const fs = require('fs')
 
 const { db } = require("../models")
-const {Item,ItemImage} = db
+const {ItemImage} = db
 
-add = async({id,files})=>{
+add = async({id,files,protocol,host})=>{
     const itemid = mongoose.Types.ObjectId(id)
     const imgArr=files.map(file=>{
+        let path = file.path
+        path   = path.replace('\\','/')
         return{
-            photoUrl:file.path,
+            photoUrl:protocol+"://"+host+':'+`${process.env.PORT||3000}`+'/'+path,
             itemId:itemid
         }
     })
@@ -41,7 +45,8 @@ destroy = async({imgId})=>{
     imgId = mongoose.Types.ObjectId(imgId)
     await ItemImage.deleteOne({
         _id:imgId
-    })
+    })        
+ //   fs.unlink( "uploads/24-dabur-chyawanprash.png",(err=>{if(err)console.log(err)}))
     const result= {
         statusCode:200,
         message:"Image deleted Successfully",
