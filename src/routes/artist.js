@@ -3,7 +3,7 @@ const express = require('express');
 const router = express.Router()
 
 
-const { post,put,getOne,getAll } = require('../controllers/artist');
+const { post,put,getOne,getAll, getItems } = require('../controllers/artist');
 const { isAuthorize } = require('../middlewares/permissions/isAuthorize');
 const { artistValidation } = require('../middlewares/validations/artistValidation');
 const { uploadImage } = require('../middlewares/validations/imageUpload');
@@ -18,6 +18,6 @@ router.post('/users/:id/artist',isAuth,isAuthorize("MANAGE_ARTIST"),uploadImage,
 router.get('/artists',isAuth,getAll)
 router.get('/artists/:id',isAuth,getOne)
 router.put('/artists/:id',isAuth,isAuthorize("MANAGE_ARTIST"),uploadImage,artistValidation,validateResult,uploadImage,put)
-
+router.get('/artists/:id/items',isAuth,getItems)
 
 module.exports = router;

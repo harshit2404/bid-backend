@@ -4,6 +4,7 @@ const {Bid}  = db
 
 
 add = async ({bidAmount,userId,id})=>{
+    console.log(id)
     let bid=await Bid.findOne({
         userId:mongoose.Types.ObjectId(userId),
         itemId:mongoose.Types.ObjectId(id)
@@ -16,7 +17,7 @@ add = async ({bidAmount,userId,id})=>{
     bid = new Bid({
         bidAmount,
         userId:userId,
-        item:id
+        itemId:id
 
     })
     await bid.save()
@@ -95,7 +96,8 @@ fetchHighest = async({id})=>{
 
     const bid=await Bid.find({
         itemId:mongoose.Types.ObjectId(id)
-    }).select('bidAmount').sort({'bidAmount':-1}).limit(1)
+    }).select().sort({'bidAmount':-1}).limit(1)
+    console.log(bid)
     const result= {
         statusCode:200,
         message:"Highest Bid fetched Successfully",

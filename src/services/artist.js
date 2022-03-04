@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 
 const { db } = require("../models");
-const {Artist,User} = db
+const {Artist,User,Item} = db
 
 
 
@@ -122,6 +122,18 @@ fetchAll = async({modQuery})=>{
     return result
 }
 
+fetchItems = async({id})=>{
+   const items= await Item.find({
+        artistId:mongoose.Types.ObjectId(id)
+    })
+    const result= {
+        statusCode:200,
+        message:"Artists fetched Successfully",
+        data:items,
+    }
+    return result
+}
+
 
     
 
@@ -130,5 +142,6 @@ module.exports = {
 add,
 update,
 fetchOne,
-fetchAll
+fetchAll,
+fetchItems,
 }

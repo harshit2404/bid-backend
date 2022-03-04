@@ -1,4 +1,4 @@
-const { add,update,fetchOne,fetchAll } = require("../services/artist")
+const { add,update,fetchOne,fetchAll, fetchItems } = require("../services/artist")
 const { enhanceQuery } = require("../utils/queryEnhancer")
 
 
@@ -112,10 +112,37 @@ getAll = async (req,res) =>{
 }    
 
 
+getItems = async (req,res) =>{
+    const {params} = req
+    const {id}     = params
+    try{
+    const result = await fetchItems({id})
+    response({
+        res:res,
+        statusCode:result.statusCode,
+        message:result.message,
+        data:result.data
+
+    })
+    
+    }
+    catch(err){
+        failureResponse({
+            res:res,
+            statusCode:err.statusCode,
+            message:err.message,
+        
+        })
+        
+    }
+}   
+
+
 
 module.exports = {
     post,
     put,
     getOne,
-    getAll
+    getAll,
+    getItems,
 }

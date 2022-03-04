@@ -6,7 +6,7 @@ const {EmptyValue,InvalidType} = customError
 
 
 bidValidation = [
-    check("price")
+    check("bidAmount")
     .trim()
     .not()
     .isEmpty()
