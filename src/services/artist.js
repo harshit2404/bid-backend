@@ -128,7 +128,7 @@ fetchItems = async({id})=>{
     })
     const result= {
         statusCode:200,
-        message:"Artists fetched Successfully",
+        message:"Items fetched Successfully",
         data:items,
     }
     return result
