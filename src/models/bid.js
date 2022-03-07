@@ -32,8 +32,8 @@ const BidSchema =  new Schema({
    }
 
 },{
-    toObject: {virtuals:true},
-    toJSON: {virtuals:true}
+    toObject: {getters:true,virtuals:true},
+    toJSON: {getters:true,virtuals:true}
    });
 
 BidSchema.pre('save',function(next){

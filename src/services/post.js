@@ -17,21 +17,6 @@ fetchAll = async({modQuery})=>{
     return result
 }
 
-
-/*
-fetchAll = async()=>{
-    const posts= await Item.find({
-         bidStatus:'AUCTION'
-     }).populate('artist')
-     const result= {
-         statusCode:201,
-         message:"Posts fetched Successfully",
-         data:posts,
-     }
-     return result
- 
- }
-*/ 
  
  
 fetchOne = async({id})=>{

@@ -53,23 +53,7 @@ add = async({name,description,files,userId,protocol,host})=>{
 fetchAll = async({modQuery})=>{
     const {query,sort,limit,skip} =  modQuery
     const items = await Item.find(query).sort(sort).limit(limit).skip(skip)
-   /*const items = await Item.aggregate([
-        {
-            $lookup:{
-                from: "Artist",
-                localField:"artistId",
-                foreignField:"_id",
-                as:"artistId"
-            },
-            
-        },{
-            $unwind:"$artistId"
-        }
-        
-    ])*/
-    
-
-        
+         
     const result= {
         statusCode:200,
         message:"Items fetched Successfully",
