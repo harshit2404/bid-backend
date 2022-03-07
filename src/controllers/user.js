@@ -1,4 +1,4 @@
-const { add, login, fetchAll, fetchOne, update,updatePassword,fetchAddress, fetchArtist } = require("../services/user");
+const { add, login, fetchAll, fetchOne, update,updatePassword,forgotPassword,resetPassword,fetchAddress, fetchArtist } = require("../services/user");
 const { enhanceQuery } = require("../utils/queryEnhancer");
 const { response,failureResponse } = require("../utils/result");
 
@@ -218,6 +218,57 @@ getArtist = async (req,res) =>{
 }    
 
 
+forgot = async (req,res) =>{
+    const {email} = req.body
+    try{
+    const result = await forgotPassword({email})
+    response({
+        res:res,
+        statusCode:result.statusCode,
+        message:result.message,
+        data:result.data
+
+    })
+    
+    }
+    catch(err){
+        failureResponse({
+            res:res,
+            statusCode:err.statusCode,
+            message:err.message,
+        
+        })
+        
+    }
+}
+
+
+
+reset = async (req,res) =>{
+    const {password} = req.body
+    const {id,token} = req.params
+    try{
+    const result = await resetPassword({id,token,password})
+    response({
+        res:res,
+        statusCode:result.statusCode,
+        message:result.message,
+        data:result.data
+
+    })
+    
+    }
+    catch(err){
+        failureResponse({
+            res:res,
+            statusCode:err.statusCode,
+            message:err.message,
+        
+        })
+        
+    }
+}
+
 
 
 
@@ -231,6 +282,8 @@ module.exports = {
     putPassword,
     getAddress,
     getArtist,
+    forgot,
+    reset,
 }
 
 

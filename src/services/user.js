@@ -1,6 +1,7 @@
 const mongoose = require('mongoose')
 const bcrypt = require('bcryptjs')
 const jwt    = require('jsonwebtoken')
+const nodemailer = require('nodemailer')
 require('dotenv').config()
 
 const { db } = require("../models");
@@ -204,6 +205,105 @@ fetchArtist = async({id})=>{
 
 }
 
+
+forgotPassword = async({email})=>{
+    const user =  await User.findOne({
+            email:email
+        })
+    
+    if(user){
+        const secret = process.env.JWT_SECRET + user.password
+        const payload = {
+            email:user.email,
+            id:user.id
+        }
+        const token = jwt.sign(payload,secret,{expiresIn:'15m'})
+        const link  = `http://localhost:${process.env.PORT||3000}/reset-password/${user.id}/${token}`
+
+        let transporter = nodemailer.createTransport({
+            host: process.env.SMTP_HOST,
+            port: process.env.SMTP_PORT,
+            secure: true, // true for 465, false for other ports
+            auth: {
+              user: process.env.SMTP_AUTH_USER, // generated ethereal user
+              pass: process.env.SMTP_AUTH_USER_PASSWORD, // generated ethereal password
+            },
+          });
+
+          let info = await transporter.sendMail({
+            from: '"John Carter" <carterjohn2404@gmail.com>', // sender address
+            to: email, // list of receivers
+            subject: "Reset Password link", // Subject line
+            html: `<b>Reset your password</b>
+                    <a href=${link}>Reset</a>
+            `, // html body
+          });  
+
+          
+  console.log("Message sent: %s", info.messageId);
+  // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com>
+
+  // Preview only available when sending through an Ethereal account
+  console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
+
+        const result= {
+            statusCode:200,
+            message:`Link sended successfully to provided ${email}`,
+            data:true
+        }
+        return result
+
+    }
+   else{
+       const error = new Error("User doesn't exist")
+       error.statusCode = 400
+       throw error
+   } 
+ 
+
+}
+
+
+resetPassword = async({id,token,password})=>{
+    const user =  await User.findOne({
+        _id:mongoose.Types.ObjectId(id),
+    })
+    if(!user){
+        const error = new Error("User doesn't exist")
+        error.statusCode = 400
+        throw error
+
+    }
+    const secret  = process.env.JWT_SECRET + user.password
+    const decodedToken = jwt.verify(token,secret)
+
+    if(decodedToken){
+     console.log(decodedToken)
+     const {id,email} = decodedToken
+     const user =  await User.findOne({
+        _id:mongoose.Types.ObjectId(id),
+        email:email
+    }) 
+    user.password = password
+    await user.save()
+    const result= {
+        statusCode:200,
+        message:'password changed successfully',
+        data:user
+    }
+    return result
+
+    }
+    else{
+        const error = new Error('Invalid Token')
+        error.statusCode = 400
+        throw error
+    }
+
+
+
+}
+
 module.exports = {
     add,
     login,
@@ -213,4 +313,6 @@ module.exports = {
     updatePassword,
     fetchAddress,
     fetchArtist,
+    forgotPassword,
+    resetPassword,
 }
