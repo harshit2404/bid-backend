@@ -7,6 +7,7 @@ require('dotenv').config()
 const { db } = require("../models");
 const {Address,User,Artist} = db
 
+
 add = async({username,email,password,firstname,lastname,phoneNumber,stripePaymentId,isActive})=>{
 
    
@@ -61,7 +62,9 @@ login = async({email,password})=>{
     if(!isUserPassword){
         const error = new Error("Invalid Credentials! Wrong password")
         error.statusCode = 401
-        throw  error
+        throw error
+
+        
         
     }
 

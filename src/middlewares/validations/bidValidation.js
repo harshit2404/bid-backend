@@ -10,10 +10,10 @@ bidValidation = [
     .trim()
     .not()
     .isEmpty()
-    .withMessage(EmptyValue)
+    .withMessage(EmptyValue({field:"bidAmount"}))
     .toFloat()
     .isFloat()
-    .withMessage(InvalidType("Must be a float number"))
+    .withMessage(InvalidType({msg:"Must be a float number",field:"bidAmount"}))
     
 ]
 

@@ -1,3 +1,6 @@
+const {customError}   = require('./customError')
+const {InvalidFormat} = customError
+
 response = (obj)=>{
 
     res = obj.res
@@ -11,6 +14,7 @@ response = (obj)=>{
     
 }
 
+
 failureResponse = (obj)=>{
     if(!obj.statusCode){
         obj.statusCode = 500
@@ -20,14 +24,13 @@ failureResponse = (obj)=>{
     }
     res = obj.res
    
-    
-    res.status(obj.statusCode).json({
-      
-        message:obj.message
-      
-
-    })
+    if(obj.error){
+        res.status(obj.statusCode).json({error:obj.error})
+    }
+    res.status(obj.statusCode).json({error:{message:obj.message}})
+  
 }
+
 
 module.exports = {
    response,

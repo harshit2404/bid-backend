@@ -1,10 +1,11 @@
 customError = {
     
-EmptyValue:{
+EmptyValue:({field})=>{
+    return{
     code:"P-FF-1",
-    field:"Value",
+    field:field,
     message:"Can't be an empty field"
-},
+}},
 
 InvalidEmail:{
     code:"P-FF-2",
@@ -15,34 +16,36 @@ InvalidEmail:{
 
 InvalidPassword:{
     code:"P-FF-3",
-    field:"value",
+    field:"password",
     message:"Password must include one lowercase letter,one uppercase character,a number and a  special character"
 
 },
 
-InvalidFormat:{
+InvalidFormat:({field})=>{
+    return {
    code:"P-FF-6",
-   field:"value",
+   field:field,
    message:"Invalid Format"
-},
+}},
 
-InvalidType:({msg})=>{
+InvalidType:({msg,field})=>{
     return{
         code:"P-FF-4",
-        field:"value",
+        field:field,
         message:msg
     }
 
 },
 
 
-InvalidLength:({msg})=>{
+InvalidLength:({msg,field})=>{
     return{
     code:"P-FF-5",
-    field:"Value",
+    field:field,
     message:msg 
     }
 },
+
 
 
 
