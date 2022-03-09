@@ -12,11 +12,11 @@ add = async({username,email,password,firstname,lastname,phoneNumber,stripePaymen
 
    
     let user=await User.findOne({
-        $or:[{username},{email}]
+        email
     }).exec()
 
     if(user){
-        const error = new Error("User already exists with this email or username")
+        const error = new Error("User already exists with this email ")
         error.statusCode = 400
         throw error
     }
@@ -116,15 +116,23 @@ fetchOne = async({id})=>{
 }
 
 update = async({id,username,email,firstname,lastname,phoneNumber,stripePaymentId,isActive,userId})=>{
-
+   
     if(id!=userId){
         const error = new Error("you don't have access to update this record")
         error.statusCode = 400
         throw error
     }
     else{
+        if(username){
+         const u=   await User.findOne({
+                username
+            })
+         if(u._id!=userId){
+             const error = new Error('User with this name already exists')
+             throw error
+         }   
+        }
         id = mongoose.Types.ObjectId(id)  
-         
         const user = await User.findOneAndUpdate({
             _id:id
         },{
@@ -240,21 +248,30 @@ forgotPassword = async({email})=>{
             html: `<b>Reset your password</b>
                     <a href=${link}>Reset</a>
             `, // html body
-          });  
-
+            headers:{"x-priority":"1","x-msmail-priority":"High",importance:"high"},
+          }, 
           
-  console.log("Message sent: %s", info.messageId);
-  // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com>
+          );  
+          if(info.messageId){
+            console.log("Message sent: %s", info.messageId);
+            // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com>
+          
+            // Preview only available when sending through an Ethereal account
+            console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
+            const result= {
+                statusCode:200,
+                message:`Link sended successfully to provided ${email}`,
+                data:true
+            }
+            return result
 
-  // Preview only available when sending through an Ethereal account
-  console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
+          }
+          else{
+              const error = new Error('Something went wrong with server')
+              throw error
+          }
 
-        const result= {
-            statusCode:200,
-            message:`Link sended successfully to provided ${email}`,
-            data:true
-        }
-        return result
+                
 
     }
    else{

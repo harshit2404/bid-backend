@@ -10,7 +10,7 @@ const { isAuth } = require('../middlewares/validations/isAuth');
 
 
 router.post('/items/:id/images',isAuth,uploadImage,post)
-router.get('/items/:id/images',isAuth,getAll)
+router.get('/items/:id/images',getAll)
 router.delete('/items/:id/images/:imgId',del)
 
 

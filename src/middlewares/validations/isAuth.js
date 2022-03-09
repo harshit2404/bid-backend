@@ -22,7 +22,8 @@ isAuth = async(req,res,next)=>{
         })
 
     }
-    const token = authHeader.split(' ')[1];
+  else{
+    const token =  authHeader.split(' ')[1];
     let decodedToken;
     try{
          decodedToken = jwt.verify(token,process.env.JWT_SECRET)
@@ -65,6 +66,7 @@ isAuth = async(req,res,next)=>{
         
         })
     }
+}
 }
 }
 
