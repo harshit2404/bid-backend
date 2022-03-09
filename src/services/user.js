@@ -229,7 +229,7 @@ forgotPassword = async({email})=>{
             id:user.id
         }
         const token = jwt.sign(payload,secret,{expiresIn:'15m'})
-        const link  = `http://localhost:${process.env.PORT||3000}/reset-password/${user.id}/${token}`
+        const link  = `http://localhost:${process.env.PORT||3000}/reset/${user.id}/${token}`
 
         let transporter = nodemailer.createTransport({
             host: process.env.SMTP_HOST,
