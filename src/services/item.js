@@ -1,6 +1,7 @@
 const mongoose = require('mongoose')
 
 const { db } = require("../models")
+const { fetchHighest } = require('./bid')
 const { add:addImage } = require('./itemImage')
 const {Item,Artist} = db
 
@@ -142,12 +143,43 @@ updateAuctionOrSold = async({id,bidStatus,bidStartTime,bidEndTime})=>{
 
 }
 
+
+
+
+
+attachFinalBid = async({id})=>{
+     
+    const item=await Item.findOne({
+        _id:mongoose.Types.ObjectId(id)
+    })
+    const currentTime = Date.now()
+    if(item.bidEndTime<currentTime){
+        const bid=await fetchHighest({id})
+        item.finalBidId = bid._id
+        await item.save()
+        const result= {
+            statusCode:200,
+            message:"Final bid to this item added Successfully",
+            data:item
+        }
+        return result
+        
+    }
+    else{
+        const error      = new Error("Final bid cannot be added until finalbidTime reached")
+        error.statusCode = 400
+        throw error
+    }
+}
+
+
 module.exports = {
     add,
     fetchAll,
     fetchOne,
     update,
     updateAuctionOrSold,
+    attachFinalBid,
 
     
 }

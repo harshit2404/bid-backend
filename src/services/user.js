@@ -230,7 +230,7 @@ forgotPassword = async({email})=>{
         }
         const token = jwt.sign(payload,secret,{expiresIn:'15m'})
         const link  = `http://localhost:${process.env.PORT||3000}/reset/${user.id}/${token}`
-
+        console.log(process.env.SMTP_AUTH_USER+""+process.env.SMTP_AUTH_USER_PASSWORD)
         let transporter = nodemailer.createTransport({
             host: process.env.SMTP_HOST,
             port: process.env.SMTP_PORT,
@@ -260,7 +260,7 @@ forgotPassword = async({email})=>{
             console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
             const result= {
                 statusCode:200,
-                message:`Link sended successfully to provided ${email}`,
+                message:`Link sended successfully to provided email ${email}`,
                 data:true
             }
             return result

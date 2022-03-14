@@ -1,4 +1,4 @@
-const { add,fetchAll,fetchOne,fetchLoggedInUser,update,updateAuctionOrSold } = require("../services/item")
+const { add,fetchAll,fetchOne,attachFinalBid,update,updateAuctionOrSold } = require("../services/item")
 const { enhanceQuery } = require("../utils/queryEnhancer")
 
 
@@ -141,6 +141,32 @@ putAuctionOrSold = async (req,res) =>{
 } 
 
 
+patchFinalBid = async (req,res) =>{
+    const {params} = req
+    let {id} = params
+
+    try{
+    const result = await attachFinalBid({id})
+    response({
+        res:res,
+        statusCode:result.statusCode,
+        message:result.message,
+        data:result.data
+
+    })
+    
+    }
+    catch(err){
+        failureResponse({
+            res:res,
+            statusCode:err.statusCode,
+            message:err.message,
+        
+        })
+        
+    }
+}    
+
 
 
 
@@ -152,5 +178,6 @@ module.exports = {
     getOne,
     put,
     putAuctionOrSold,
+    patchFinalBid,
     
 }

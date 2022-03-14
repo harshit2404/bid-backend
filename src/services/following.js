@@ -3,6 +3,52 @@ const {  mongoose } = require("mongoose")
 const { db } = require("../models")
 const {Following} = db
 
+/*
+fetch = async({userId,id})=>{
+    let isFollowing;
+    const following=await Following.findOne({
+        userId:mongoose.Types.ObjectId(userId),
+        artistId:mongoose.Types.ObjectId(id)
+    })
+    if(following){
+        isFollowing = true;
+    }
+    else{
+        isFollowing=false;
+    }
+    const result= {
+        statusCode:200,
+        message:"Followed Successfully",
+        data:{isFollowing,following},
+    }
+    return result
+
+}*/
+
+
+fetch = async({id,userId})=>{
+    let isFollowing;
+    const following=await Following.findOne({
+        userId:mongoose.Types.ObjectId(userId),
+        artistId:mongoose.Types.ObjectId(id)
+    })
+    if(following){
+        isFollowing = true;
+    }
+    else{
+        isFollowing=false;
+    }   
+    const followingList=await Following.find({
+        artistId:mongoose.Types.ObjectId(id)
+    })
+    const result= {
+        statusCode:200,
+        message:"Artists following list fetched Successfully",
+        data:{isFollowing,followingList}
+    }
+    return result   
+}
+
 add = async({id,userId})=>{
     let following;
     following  = await Following.findOne({
@@ -57,4 +103,5 @@ destroy = async({id,userId})=>{
 module.exports = {
     add,
     destroy,
+    fetch,
 }

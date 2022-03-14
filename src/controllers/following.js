@@ -1,7 +1,6 @@
-const { add,destroy } = require("../services/following")
+const { add,destroy,fetch } = require("../services/following")
 
 post = async (req,res) =>{
-    console.log('hrry')
     const {userId,params}    = req
     const {id}               = params
     try{
@@ -53,7 +52,38 @@ del = async (req,res) =>{
     }
 }
 
+
+
+get = async (req,res) =>{
+    const {userId,params}    = req
+    const {id}               = params
+    try{
+    const result = await fetch({id,userId})
+    response({
+        res:res,
+        statusCode:result.statusCode,
+        message:result.message,
+        data:result.data
+
+    })
+    
+    }
+    catch(err){
+        failureResponse({
+            res:res,
+            statusCode:err.statusCode,
+            message:err.message,
+        
+        })
+        
+    }
+}  
+
+
+
+
 module.exports = {
     post,
     del,
+    get,
 }

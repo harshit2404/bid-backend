@@ -1,5 +1,6 @@
 const { mongoose } = require("mongoose");
 const { db } = require("../models");
+const item = require("../models/item");
 const {Bid}  = db
 
 
@@ -59,7 +60,7 @@ fetchItem = async({id})=>{
     const result= {
         statusCode:200,
         message:"Bids fetched Successfully",
-        data:bids,
+        data:bids,j
     }
     return result
 
@@ -114,5 +115,6 @@ module.exports = {
     update,
     fetchItem,
     fetchCurrent,
-    fetchHighest
+    fetchHighest,
+    
 }
