@@ -61,6 +61,7 @@ add = async({id,userId})=>{
         error.statusCode = 400
         throw error
     }
+    else{
     following  = new Following({
         userId:userId,
         artistId:id
@@ -72,6 +73,7 @@ add = async({id,userId})=>{
         data:following,
     }
     return result
+}
     
 
 }
@@ -87,6 +89,7 @@ destroy = async({id,userId})=>{
         artist.statusCode = 400
         throw error
     }
+    else{
     await Following.deleteOne({
         userId:mongoose.Types.ObjectId(userId),
         artistId:mongoose.Types.ObjectId(id)
@@ -97,6 +100,7 @@ destroy = async({id,userId})=>{
         data:0,
     }
     return result
+}
 
 }
 

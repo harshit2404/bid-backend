@@ -22,21 +22,38 @@ add = async({id,userId})=>{
 }
 
 
-fetchAll  = async({id})=>{
+fetchAll  = async({id,userId})=>{
+   const itemId   = mongoose.Types.ObjectId(id) 
+   let isFollowing
    const followers= await ItemFollowing.find({
-    itemId:mongoose.Types.ObjectId(id)
+    itemId,
     })
+
+    const userFollowed = await ItemFollowing.findOne({
+        userId:mongoose.Types.ObjectId(userId),
+        itemId     
+    })
+
+    if(userFollowed){
+        isFollowing=true
+    }
+    else{
+        isFollowing=false
+    }
+
 
    const result= {
     statusCode:201,
     message:" Item follower list fetched Successfully",
     data:{
         followedBy:followers,   
+        isFollowing,
     },
 }
 return result
 
 }
+
 
 destroy = async({id,userId})=>{
     await ItemFollowing.deleteOne({

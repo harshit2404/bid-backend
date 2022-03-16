@@ -29,9 +29,10 @@ post = async (req,res) =>{
 
 
 getAll = async (req,res) =>{
+    const {userId}           = req
     const {id}               = req.params
     try{
-    const result = await fetchAll({id})
+    const result = await fetchAll({id,userId})
     response({
         res:res,
         statusCode:result.statusCode,

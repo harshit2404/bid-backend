@@ -19,7 +19,7 @@ router.get('/users/:id/address',isAuth,getAddress)
 router.get('/users/:id/artist',getArtist)
 router.post('/forgot-password',forgot)
 router.post('/reset-password/:id/:token',reset)
-router.post('/add-image',isAuth,uploadImage,postImage)
+router.patch('/add-image',isAuth,uploadImage,postImage)
 
 
 
