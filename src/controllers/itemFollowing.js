@@ -29,7 +29,7 @@ post = async (req,res) =>{
 
 
 getAll = async (req,res) =>{
-    const {id}               = params
+    const {id}               = req.params
     try{
     const result = await fetchAll({id})
     response({

@@ -23,16 +23,15 @@ add = async({id,userId})=>{
 
 
 fetchAll  = async({id})=>{
-   const following= await ItemFollowing.find({
+   const followers= await ItemFollowing.find({
     itemId:mongoose.Types.ObjectId(id)
-    }).select('user','followedAt')
-   const count    = await ItemFollowing.count() 
+    })
+
    const result= {
     statusCode:201,
-    message:" Item followed Successfully",
+    message:" Item follower list fetched Successfully",
     data:{
-        followedBy:following,
-        count
+        followedBy:followers,   
     },
 }
 return result
