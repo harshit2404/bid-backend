@@ -9,6 +9,12 @@ const UserSchema =  new Schema({
         required:false,
         default:null
     },
+    photoUrl:{
+        type:String,
+        required:false,
+        default:null,
+
+    },
     email:{
         type:String,
         unique:true,

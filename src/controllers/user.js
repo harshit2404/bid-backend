@@ -1,4 +1,4 @@
-const { add, login, fetchAll, fetchOne, update,updatePassword,forgotPassword,resetPassword,fetchAddress, fetchArtist } = require("../services/user");
+const { add, login, fetchAll, fetchOne, update,updatePassword,forgotPassword,resetPassword,fetchAddress, fetchArtist,addImage } = require("../services/user");
 const { enhanceQuery } = require("../utils/queryEnhancer");
 const { response,failureResponse } = require("../utils/result");
 
@@ -273,6 +273,34 @@ reset = async (req,res) =>{
 
 
 
+postImage = async (req,res) =>{
+    const {files,protocol,host,userId} = req
+    try{
+    const result = await addImage({files,userId,protocol,host})
+    response({
+        res:res,
+        statusCode:result.statusCode,
+        message:result.message,
+        data:result.data
+
+    })
+    
+    }
+    catch(err){
+        failureResponse({
+            res:res,
+            statusCode:err.statusCode,
+            message:err.message,
+        
+        })
+        
+    }
+}    
+
+
+
+
+
 module.exports = {
     signup,
     signin,
@@ -284,6 +312,7 @@ module.exports = {
     getArtist,
     forgot,
     reset,
+    postImage,
 }
 
 

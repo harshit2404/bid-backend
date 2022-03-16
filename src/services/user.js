@@ -324,6 +324,29 @@ resetPassword = async({id,token,password})=>{
 
 }
 
+addImage = async({userId,files,protocol,host})=>{
+    console.log(userId)
+    let path = files[0].path
+    path   = path.replace('\\','/')
+    console.log(path)
+    const user=await User.findOneAndUpdate({
+        _id:mongoose.Types.ObjectId(userId)
+    },{
+
+        photoUrl:protocol+"://"+host+':'+`${process.env.PORT||3000}`+'/'+path
+    })
+
+    const result= {
+        statusCode:200,
+        message:'Image added successfully',
+        data:user
+    }
+    return result
+
+    
+
+}
+
 module.exports = {
     add,
     login,
@@ -335,4 +358,5 @@ module.exports = {
     fetchArtist,
     forgotPassword,
     resetPassword,
+    addImage,
 }
