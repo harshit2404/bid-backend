@@ -10,12 +10,14 @@ io.on('connection', (socket) => {
         const token=socket.request.headers.bearertoken
         console.log(token)
         try{
+            console.log('rumm')
             decodedToken =  jwt.verify(token,process.env.JWT_SECRET)
             console.log(decodedToken)
             userId = decodedToken.userId
             }
             catch(err){      
-                console.log(err)
+                console.log('eyy')
+                
             }
         
         socket.join(userId)

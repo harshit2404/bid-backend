@@ -1,9 +1,10 @@
+token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImJ1ZGhsYWtvdGloYXJzaGl0MjRAZ21haWwuY29tIiwidXNlcklkIjoiNjIxNjdiZmUxNGM2ODRjNjVhMDIzMjUzIiwiaWF0IjoxNjQ3ODY2MTA2LCJleHAiOjE2NDc4Njk3MDZ9.ZCcmcJdQF5dKlarQy-Z83gtaNKSLt__BKyjOLaEZc40'
 //connecting sockets
 const socket = io('http://127.0.0.1:3000/',{
     transportOptions:{
         polling:{
             extraHeaders:{
-                BearerToken: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImJ1ZGhsYWtvdGloYXJzaGl0MjRAZ21haWwuY29tIiwidXNlcklkIjoiNjIxNjdiZmUxNGM2ODRjNjVhMDIzMjUzIiwiaWF0IjoxNjQ3ODYyMDAwLCJleHAiOjE2NDc4NjU2MDB9.G6p5qCj-EvPQO3xL-OMo7ypFN_Td49uMDpg9b-DOLI8"
+                BearerToken: token
             }
         }
     }
@@ -13,7 +14,6 @@ socket.on("connect",()=>{
     socket.emit('subscribe')   //subscribing user
     
 socket.on("response",data=>{
-    console.log('gooo')
     console.log("socket response"+data)
 })
 })
@@ -65,7 +65,7 @@ async function send(){
         body:JSON.stringify(subscription),
         headers:{
             'content-type':"application/json",
-            "Authorization":'Bearer ' + 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImJ1ZGhsYWtvdGloYXJzaGl0MjRAZ21haWwuY29tIiwidXNlcklkIjoiNjIxNjdiZmUxNGM2ODRjNjVhMDIzMjUzIiwiaWF0IjoxNjQ3ODYyMDAwLCJleHAiOjE2NDc4NjU2MDB9.G6p5qCj-EvPQO3xL-OMo7ypFN_Td49uMDpg9b-DOLI8'//hard-coded
+            "Authorization":'Bearer ' + token
         }
     })
   console.log(result)  

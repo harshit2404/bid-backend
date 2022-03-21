@@ -33,9 +33,11 @@ notifyUser = async({id,bid,userId})=>{
   const message = "You are the highest bid holder"
   const notification = new Notification({
       message,
+      userId:highestBid[0].userId
   })
   await notification.save()
   const highestBidUserId = highestBid[0].userId.toString()
+  console.log(highestBidUserId)
   io.in(highestBidUserId).emit("response",JSON.stringify(notification))
 
        if(highestBid[1]){
@@ -68,6 +70,7 @@ notifyUser = async({id,bid,userId})=>{
 const message = "You were outbid"
 const notification = new Notification({
     message,
+    userId:highestBid[1].userId
 })
 await notification.save()
 console.log(typeof(highestBid[1].userId))

@@ -5,7 +5,7 @@ self.addEventListener('push', e=>{
     console.log("harry")
     console.log(data)
     console.log('push received');
-    self.registeration.showNotification(data.title, {
+    self.registration.showNotification(data.title, {
         body: 'Notified by closiit!',
         icon: './vc.png',
         image :'./vc.png'
