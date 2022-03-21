@@ -1,8 +1,62 @@
 const { mongoose } = require("mongoose");
-const { db } = require("../models");
-const item = require("../models/item");
-const {Bid}  = db
+const webpush    = require('web-push')
 
+const { db } = require("../models");
+const {Bid,Subscriber}  = db
+
+
+
+notifyUser = async({id,bid,userId})=>{
+
+    
+    const highestBid=await Bid.find({
+        itemId:mongoose.Types.ObjectId(id)
+    }).select().sort({'bidAmount':-1}).limit(2)
+    
+    if(bid._id.equals(highestBid[0]._id)){
+        console.log('yooo')
+      
+        const highestBidSubscriberSubscription = await Subscriber.find({
+            userId:mongoose.Types.ObjectId(highestBid[0].userId)
+        })
+        if(highestBidSubscriberSubscription.length>0){
+            
+  const payload = JSON.stringify({ title: "Congrats! You are the highest bid holder" });
+  for await(sub of highestBidSubscriberSubscription){
+    await webpush
+    .sendNotification(sub, payload)
+    
+  }
+
+        }
+        if(highestBid[1]){
+        const lastHighestBidHolderId = highestBid[1].userId
+        console.log(lastHighestBidHolderId)
+        const subscription=await Subscriber.find({
+            userId:mongoose.Types.ObjectId(lastHighestBidHolderId)
+        })
+        console.log(subscription)
+        console.log(userId)
+        if(subscription.length>0){
+            
+ 
+  const payload = JSON.stringify({ title: "You were outbid" });
+  for await(sub of subscription){
+    await webpush
+    .sendNotification(sub, payload)
+    
+
+  }
+
+  /*
+  webpush
+    .sendNotification(subscription, payload)
+    .catch((err) => console.error(err));
+        }
+    }
+*/}}}
+
+}
 
 add = async ({bidAmount,userId,id})=>{
     console.log(id)
@@ -15,6 +69,7 @@ add = async ({bidAmount,userId,id})=>{
         error.statusCode = 400
         throw error
     }
+    else{
     bid = new Bid({
         bidAmount,
         userId:userId,
@@ -22,14 +77,18 @@ add = async ({bidAmount,userId,id})=>{
 
     })
     await bid.save()
+    await notifyUser({id,bid,userId})
+
     const result= {
         statusCode:201,
         message:"Bid Added Successfully",
         data:bid,
     }
     return result
-
 }
+}
+
+
 
 update = async({bidAmount,userId,id})=>{
 
@@ -40,6 +99,7 @@ update = async({bidAmount,userId,id})=>{
     
     bid.bidAmount = bidAmount
     await bid.save()
+    notifyUser({id,bid,userId})
     const result= {
         statusCode:200,
         message:"Bid Updated Successfully",
