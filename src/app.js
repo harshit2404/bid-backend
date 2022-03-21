@@ -8,6 +8,7 @@ require('dotenv').config()
 const {mongoConnect} = require('./db/mongoose')
 
 
+
 const app = express()
 
 webpush.setVapidDetails(
@@ -15,6 +16,9 @@ webpush.setVapidDetails(
     process.env.PUBLIC_KEY,
     process.env.PRIVATE_KEY
   );
+
+
+const server = require('http').createServer(app);  
   
 app.use(express.static(path.join(__dirname,"client")))
 app.use('/uploads',express.static('uploads'))
@@ -25,4 +29,14 @@ app.use(express.urlencoded({extended:true}))
 
 
 require('./routes/index')(app)
-mongoConnect(app)
+mongoConnect(server)
+
+global.io = require('socket.io')(server,{
+    cors:{
+        origin:'*'
+    }
+});
+
+require('./utils/sockets')(io)
+
+

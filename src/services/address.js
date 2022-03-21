@@ -33,7 +33,7 @@ fetchAll = async({userId})=>{
    const addresses=await Address.find({
         userId:mongoose.Types.ObjectId(userId)
     })
-    console.log(addresses)
+    
     const result= {
         statusCode:200,
         message:"Addresses fetched Successfully",

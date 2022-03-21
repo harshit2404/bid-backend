@@ -58,7 +58,6 @@ getAll = async (req,res) =>{
 
 
 getOne = async (req,res) =>{
-    console.log('hh')
     const {id,commentId}  = req.params
 
     try{

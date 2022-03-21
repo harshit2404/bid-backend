@@ -2,7 +2,7 @@ const { mongoose } = require("mongoose");
 const webpush    = require('web-push')
 
 const { db } = require("../models");
-const {Bid,Subscriber}  = db
+const {Bid,Subscriber,Notification}  = db
 
 
 
@@ -27,9 +27,18 @@ notifyUser = async({id,bid,userId})=>{
     .sendNotification(sub, payload)
     
   }
-
         }
-        if(highestBid[1]){
+        
+    
+  const message = "You are the highest bid holder"
+  const notification = new Notification({
+      message,
+  })
+  await notification.save()
+  const highestBidUserId = highestBid[0].userId.toString()
+  io.in(highestBidUserId).emit("response",JSON.stringify(notification))
+
+       if(highestBid[1]){
         const lastHighestBidHolderId = highestBid[1].userId
         console.log(lastHighestBidHolderId)
         const subscription=await Subscriber.find({
@@ -54,7 +63,18 @@ notifyUser = async({id,bid,userId})=>{
     .catch((err) => console.error(err));
         }
     }
-*/}}}
+*/}
+
+const message = "You were outbid"
+const notification = new Notification({
+    message,
+})
+await notification.save()
+console.log(typeof(highestBid[1].userId))
+const lastHighestBidUserId = highestBid[1].userId.toString()
+io.in(lastHighestBidUserId).emit("response",JSON.stringify(notification))
+
+}}
 
 }
 
@@ -120,7 +140,7 @@ fetchItem = async({id})=>{
     const result= {
         statusCode:200,
         message:"Bids fetched Successfully",
-        data:bids,j
+        data:bids
     }
     return result
 

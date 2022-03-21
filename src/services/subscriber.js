@@ -4,15 +4,17 @@ const {Subscriber} = db
 
 
 add = async({userId,subscription})=>{
-
+    
     subscription.userId = userId
     const subscribed=await Subscriber.findOne(subscription)
     if(subscribed){
+        console.log('-----')
         const error = new Error("You are already subscribed with this device")
         error.statusCode = 400
         throw error
     }
     else{
+        console.log('kool')
     const subscriber = new Subscriber(subscription)
     await subscriber.save()
     const result= {

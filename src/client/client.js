@@ -1,3 +1,25 @@
+//connecting sockets
+const socket = io('http://127.0.0.1:3000/',{
+    transportOptions:{
+        polling:{
+            extraHeaders:{
+                BearerToken: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImJ1ZGhsYWtvdGloYXJzaGl0MjRAZ21haWwuY29tIiwidXNlcklkIjoiNjIxNjdiZmUxNGM2ODRjNjVhMDIzMjUzIiwiaWF0IjoxNjQ3ODYyMDAwLCJleHAiOjE2NDc4NjU2MDB9.G6p5qCj-EvPQO3xL-OMo7ypFN_Td49uMDpg9b-DOLI8"
+            }
+        }
+    }
+})
+
+socket.on("connect",()=>{
+    socket.emit('subscribe')   //subscribing user
+    
+socket.on("response",data=>{
+    console.log('gooo')
+    console.log("socket response"+data)
+})
+})
+
+
+
 function urlBase64ToUint8Array(base64String) {
     const padding = "=".repeat((4 - (base64String.length % 4)) % 4);
     const base64 = (base64String + padding).replace(/-/g, "+").replace(/_/g, "/");
@@ -43,7 +65,7 @@ async function send(){
         body:JSON.stringify(subscription),
         headers:{
             'content-type':"application/json",
-            "Authorization":'Bearer ' + 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImJ1ZGhsYWtvdGloYXJzaGl0MUBnbWFpbC5jb20iLCJ1c2VySWQiOiI2MjFjOWQ5NmM5NzAwNDg1MGU4ZjE3NzkiLCJpYXQiOjE2NDc4MzEwMjIsImV4cCI6MTY0NzgzNDYyMn0.JO2e_HYlfWzWBiPFTxzv0iyChKo6rhFSG-Xj-33BQrw'//hard-coded
+            "Authorization":'Bearer ' + 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImJ1ZGhsYWtvdGloYXJzaGl0MjRAZ21haWwuY29tIiwidXNlcklkIjoiNjIxNjdiZmUxNGM2ODRjNjVhMDIzMjUzIiwiaWF0IjoxNjQ3ODYyMDAwLCJleHAiOjE2NDc4NjU2MDB9.G6p5qCj-EvPQO3xL-OMo7ypFN_Td49uMDpg9b-DOLI8'//hard-coded
         }
     })
   console.log(result)  
