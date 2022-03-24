@@ -62,11 +62,10 @@ update = async({id,address1,address2,address3,city,country,postalcode,userId})=>
    const addressId = mongoose.Types.ObjectId(id)
    
    const address=await Address.findOne({
-       _id:addressId
-   }).populate('user')
-   const {user} = address
-   if(userId.equals(user._id))
-   {
+       _id:addressId,
+       userId,
+   })
+   
        address.address1   = address1,
        address.address2   = address2,
        address.address3   = address3,
@@ -82,12 +81,6 @@ update = async({id,address1,address2,address3,city,country,postalcode,userId})=>
     }
     return result
 
-   }
-   else{
-       const error      = new Error("you are not authorized to update this.")
-       error.statusCode = 401
-       throw error
-   }
 
 }
 

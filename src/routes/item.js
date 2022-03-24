@@ -15,7 +15,7 @@ router.get('/items',isAuth,getAll)
 router.get('/items/:id',isAuth,getOne)
 router.put('/items/:id',isAuth,isAuthorize("UPDATE_CREATE_ITEM"),itemValidation,validateResult,put)
 router.put('/items/:id/auction',isAuth,isAuthorize("MANAGE_AUCTION"),auctionValidation,validateResult,putAuctionOrSold)
-router.patch('/items/:id/bid/highest',isAuth,isAuthorize("MANAGE_AUCTION"),patchFinalBid)
+router.patch('/items/:id/final-bid',isAuth,isAuthorize("MANAGE_AUCTION"),patchFinalBid)
 
 
 

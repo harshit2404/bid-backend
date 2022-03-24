@@ -152,10 +152,11 @@ attachFinalBid = async({id})=>{
     const item=await Item.findOne({
         _id:mongoose.Types.ObjectId(id)
     })
-    const currentTime = Date.now()
-    if(item.bidEndTime<currentTime){
+    const date  = new Date()
+    if(item.bidEndTime<date){
         const bid=await fetchHighest({id})
-        item.finalBidId = bid._id
+        const {data} = bid
+        item.finalBidId = data[0]._id
         await item.save()
         const result= {
             statusCode:200,

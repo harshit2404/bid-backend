@@ -14,7 +14,6 @@ add = async({userId,subscription})=>{
         throw error
     }
     else{
-        console.log('kool')
     const subscriber = new Subscriber(subscription)
     await subscriber.save()
     const result= {

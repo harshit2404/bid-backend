@@ -41,15 +41,13 @@ fetchAll = async({id})=>{
 }
 
 fetchOne = async({id,commentId})=>{
-    console.log(id)
-    console.log(commentId)
+    
     const comment = await Comment.findOne({
         postId:mongoose.Types.ObjectId(id),
         _id :mongoose.Types.ObjectId(commentId)
     
     })
-    console.log('heey')
-    console.log(comment)
+    
 
     const result= {
         statusCode:200,

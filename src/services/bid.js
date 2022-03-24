@@ -87,6 +87,11 @@ add = async ({bidAmount,userId,id})=>{
         userId:mongoose.Types.ObjectId(userId),
         itemId:mongoose.Types.ObjectId(id)
     })
+    if(bid.status="SOLD"){
+        const error = new Error("Item is already sold")
+        error.statusCode = 400
+        throw error
+    }
     if(bid){
         const error      = new Error("You alreadyy bid for this item!Please update your previous bid")
         error.statusCode = 400
@@ -119,7 +124,11 @@ update = async({bidAmount,userId,id})=>{
         userId:mongoose.Types.ObjectId(userId),
         itemId:mongoose.Types.ObjectId(id)
     })
-    
+    if(bid.status="SOLD"){
+        const error      = new Error("Item is already sold")
+        error.statusCode = 400
+        throw error
+    }
     bid.bidAmount = bidAmount
     await bid.save()
     notifyUser({id,bid,userId})
